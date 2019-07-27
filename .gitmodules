@@ -1,3 +1,6 @@
 [submodule "themes/engimo"]
 	path = themes/engimo
 	url = https://github.com/achary/engimo.git
+[submodule "spareslant.github.io"]
+	path = spareslant.github.io
+	url = https://github.com/spareslant/spareslant.github.io.git

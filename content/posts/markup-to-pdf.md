@@ -1,7 +1,7 @@
 ---
 title: "Markup to Pdf/HTML"
 date: 2019-07-27T20:39:13+01:00
-draft: true
+draft: false
 tags: ["pdf", "html"]
 ---
 <style type="text/css">
