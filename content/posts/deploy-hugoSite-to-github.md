@@ -1,7 +1,8 @@
 ---
 title: "Deploy HugoSite to Github"
 date: 2019-08-03T19:01:43+01:00
-draft: true
+draft: false
+tags: ["hugo", "github pages deployment", "blog", "blog publishing"]
 ---
 <style type="text/css">
 .hl {color: #f155f1;}
