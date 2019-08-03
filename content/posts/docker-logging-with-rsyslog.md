@@ -3,6 +3,7 @@ title: "Docker Logging With Rsyslog"
 date: 2019-07-27T12:15:28+01:00
 draft: false
 lang: en-GB
+tags: ["docker", "rsyslog", "syslog", "logging"]
 ---
 <style type="text/css">
 .hl {color: #f155f1;}
