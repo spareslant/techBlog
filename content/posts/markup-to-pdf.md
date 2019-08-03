@@ -2,7 +2,7 @@
 title: "Markup to Pdf/HTML"
 date: 2019-07-27T20:39:13+01:00
 draft: false
-tags: ["pdf", "html"]
+tags: ["pdf generation", "html generation"]
 ---
 <style type="text/css">
 .hl {color: #f155f1;}
