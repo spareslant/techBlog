@@ -3,7 +3,7 @@ languageCode = "en-gb"
 title = "SpareSlant Technical Blog"
 theme = "engimo"
 
-Paginate = 10
+Paginate = 30
 preserveTaxonomyNames = true
 
 enableRobotsTXT = true # generate robots.txt
@@ -29,7 +29,7 @@ gopher = "" # used in 404 template ( Generator: https://gopherize.me )
 
 [params.copyright]
 prefix = ""
-holder = "Gaurav"
+holder = "SpareSlant"
 startYear = "2019"
 suffix = ""
 
