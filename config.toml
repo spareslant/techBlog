@@ -61,7 +61,7 @@ footer = ["social_menu"]
 titleSeparator = "•"
 
 [params.comments]
-enable = false
+enable = true
 
 # Utterances: https://utteranc.es
 [params.comments.utterances]
