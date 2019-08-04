@@ -835,6 +835,7 @@ nameserver 127.0.0.1
 ```
 #### Start a temp `DNS` server as following
 DNS server starting.
+
 <pre>
 $ sudo dnsmasq --no-daemon --listen-address=127.0.0.1 --address=/<span class="hlb">full.domain.name</span>/127.0.0.1 --log-queries
 
