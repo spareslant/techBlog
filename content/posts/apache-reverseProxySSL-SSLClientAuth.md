@@ -227,6 +227,7 @@ Listen 7771
 
     SSLProxyEngine On
     SSLProxyVerify require
+    SSLProxyVerifyDepth 5
     # SSLProxyCheckPeerCN Off
     SSLProxyCheckPeerName Off
     SSLProxyCACertificateFile /etc/httpd/sslCerts/myCA.crt
@@ -243,6 +244,8 @@ Listen 7771
 
 </VirtualHost>
 ```
+
+**Note**: You may need to inrease `SSLVerifyDepth` and `SSLProxyVerifyDepth` to higher number. This represents the depth of you certificate chain (Root and intermediary certs). Number need to be exact. It can be higher but no lower. Lower number will result in error.
 
 ### Start Apache
 ```bash
@@ -365,3 +368,4 @@ $ curl https://apache.server.name:7771/ \
 
 {"success":"request received successfully"}
 ```
+**Note**: You do not need to generate so many certificates. You can generate certificate having both the extensions of `TLS Web Server Authentication` and `TLS client Authentication` and that certificate can be deployed at all places.
