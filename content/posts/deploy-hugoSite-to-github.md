@@ -4,11 +4,6 @@ date: 2019-08-03T19:01:43+01:00
 draft: false
 tags: ["hugo", "github pages deployment", "blog", "blog publishing"]
 ---
-<style type="text/css">
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-.hlbr {color:#e90001; font-weight: bold;}
-</style>
 
 ### Run HTTP server to serve file locally to check the contents
 ```bash
@@ -48,7 +43,7 @@ drwxr-xr-x  3     96 17 Jul 21:27 themes
 ### clone remote `spareslant.github.io` repo.
 ```bash
 cd ../spareslant.github.io
-git clone git clone https://github.com/spareslant/spareslant.github.io.git
+git clone https://github.com/spareslant/spareslant.github.io.git
 ```
 ### Build site to be deployed.
 ```bash
@@ -67,6 +62,6 @@ $ git commit
 $ git push origin master
 ```
 ### check published changes at following link
-`https://spareslant.github.io/`
+[https://spareslant.github.io/](https://spareslant.github.io/)
 
 

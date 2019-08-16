@@ -3,10 +3,6 @@ title: "Understanding Javascript"
 date: 2019-07-28T14:27:07+01:00
 draft: true
 ---
-<style type="text/css">
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-</style>
 
 * using the var operator to define a variable makes it local to the scope in which it was defined.
 * It is, however, possible to define a variable globally by simply omitting the var operator.

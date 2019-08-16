@@ -4,11 +4,6 @@ date: 2019-08-04T14:54:01+01:00
 draft: false
 tags: ["apache", "SSL", "proxy", "reverse proxy", "SSL reverse proxy", "gunicorn", "SSL authentication", "flask" ]
 ---
-<style type="text/css">
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-.hlbr {color:#e90001; font-weight: bold;}
-</style>
 
 # Introduction
 We will be configuring `Apache` in reverse proxy mode. `Apache` will be accepting connections on secure port with SSL client authentication and forward that request to a backend application server `Gunicorn`. Communication between `apache` and `gunicorn` will also be on secure port and SSL authenticated. `Gunicorn` will run a simple `flask` app that will be writing some text to file.

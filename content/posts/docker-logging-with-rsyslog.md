@@ -5,10 +5,6 @@ draft: false
 lang: en-GB
 tags: ["docker", "rsyslog", "syslog", "logging"]
 ---
-<style type="text/css">
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-</style>
 
 ## Introduction
 This document will describe a simple strategy to logging for docker container using Rsyslog. Often we may have to run multiple containers on single machine. We may require logging for different container in different directories or files. This can be achieved using Rsyslog. Approach below is very generic and flexible and can be modified as per requirement easily.

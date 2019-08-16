@@ -4,10 +4,6 @@ date: 2019-07-27T20:39:13+01:00
 draft: false
 tags: ["pdf generation", "html generation"]
 ---
-<style type="text/css">
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-</style>
 
 ## Introduction
 This documents shows the various ways to generate PDF and self contained HTML files. 

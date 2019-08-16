@@ -4,11 +4,6 @@ date: 2019-07-17T21:35:50+01:00
 draft: false
 tags: ["SSL", "openssl", "Digital Certificates", "pki", "SSL mutual authentication", "x509", "CA", "curl"]
 ---
-<style type="text/css">
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-.hlbr {color:#e90001; font-weight: bold;}
-</style>
 
 # Introduction
 We will be creating our own CA (Certificate Authority), CSR (Certificate Signing Request), signed certificate. We will be creating server side and client side certificate and will verify them using `openssl` and `curl`.

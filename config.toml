@@ -1,100 +1,36 @@
-baseURL = "http://example.org/"
+baseURL = "/"
 languageCode = "en-gb"
 title = "SpareSlant Technical Blog"
-theme = "engimo"
+theme = "mainroad"
 
-Paginate = 30
-preserveTaxonomyNames = true
+paginate = "10"
 
-enableRobotsTXT = true # generate robots.txt
+[Author]
+    name = "SpareSlant"
 
-# Syntax Highlighting ( https://gohugo.io/content-management/syntax-highlighting/ )
-pygmentsCodefences = true
+[Params]
+    subtitle = "SpareSlant tech blog" # Subtitle of your site. Used in site header
+    description = "SpareSlant tech blog" # Site description. Used in meta description
+    copyright = "SpareSlant" # copyright holder, otherwise will use site title
+    readmore = true # Show "Read more" button in list if true
+    authorbox = true # Show authorbox at bottom of pages if true
+    toc = true # Enable Table of Contents
+    post_navigation = true # Show post navigation at bottom of pages if true
+    post_meta = ["date", "categories", "translations"] # Order of post meta information
+    # mainSections = ["post", "blog", "news"] # specify section pages to show on home page and the "Recent articles" widget
+    dateformat = "2006-01-02" # change the format of dates
+    customCSS = ["css/my.css"] # Include custom CSS files
 
-enableEmoji = true
+[Params.sidebar]
+    home = "right" # Configure layout for home page
+    list = "left"  # Configure layout for list pages
+    single = false # Configure layout for single pages
+    # Enable widgets in given order
+    widgets = ["search", "recent", "categories", "taglist", "social", "languages"]
 
-# Missing translations will default to this content language
-defaultContentLanguage = "en"
+[Params.widgets]
+    recent_num = 5 # Set the number of articles in the "Recent articles" widget
+    tags_counter = true # Enable counter for each tag in "Tags" widget (disabled by default)
 
-[params.info]
-description = "Tech Blog"
-title404 = "Nothing's here!"
 
-[params.assets]
 
-favicon = "favicon.ico"
-customCSS = ["css/custom.css"]
-customJS = ["js/custom.js"]
-gopher = "" # used in 404 template ( Generator: https://gopherize.me )
-
-[params.copyright]
-prefix = ""
-holder = "SpareSlant"
-startYear = "2019"
-suffix = ""
-
-[params.settings]
-# date & time format: https://golang.org/pkg/time/
-dateFormat = "2006, Jan 02"
-listDateFormat = "2006, Jan 02"
-archiveDateFormat = "Jan 02"
-hideEntryNavigation = ["page"] # boolean / array of sections
-hideEntryMeta = ["page"] # boolean / array of sections
-showReadingTime = true
-showLastmod = true
-taxonomyCloudShuffle = false
-accentColor = "#44ccff"
-hideMainMenu = false
-rtl = false
-
-[params.sidebar]
-enable = true
-
-[params.widgets]
-header = ["breadcrumbs"]
-homepage = ["recent_posts"]
-sidebar = ["about","search","sidebar_menu","taxonomy_cloud"]
-footer = ["social_menu"]
-
-[params.seo]
-# Title Separator: - – — · • * ⋆ | ~ « » < >
-titleSeparator = "•"
-
-[params.comments]
-enable = true
-
-# Utterances: https://utteranc.es
-[params.comments.utterances]
-enable = false
-issueTerm = "pathname" # pathname / url / title
-
-[params.comments.utterances.github]
-username = "achary"
-repository = "engimo"
-
-[params.search]
-client = "fuse" # algolia / fuse / lunr
-
-[params.search.algolia]
-appId = ""
-indexName = ""
-searchApiKey = ""
-
-[taxonomies]
-author = "authors"
-category = "categories"
-series = "series"
-tag = "tags"
-
-[permalinks]
-page = "/:slug/"
-
-[blackfriday]
-hrefTargetBlank = true
-
-[languages]
-# edit this block for your own language
-[languages.en]
-lang = "en"
-languageName = "English"
-weight = 1
