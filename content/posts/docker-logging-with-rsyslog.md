@@ -6,6 +6,18 @@ lang: en-GB
 tags: ["docker", "rsyslog", "syslog", "logging"]
 ---
 
+<!--- Below style are also defined in static/css/my.css file.
+They are repeatedly defined here so that pandoc can generate
+the final HTML with all necessary css styles.
+--->
+<style>
+.hl {color: #f155f1;}
+.hlb {color: #f155f1; font-weight: bold;}
+.hlbr {color:#e90001; font-weight: bold;}
+/* <code> tag does not work in blogger. Use following class with span tag */
+.code {color:#f20101; background: #f0f0f0; padding: 0.2em;    
+</style>
+
 ## Introduction
 This document will describe a simple strategy to logging for docker container using Rsyslog. Often we may have to run multiple containers on single machine. We may require logging for different container in different directories or files. This can be achieved using Rsyslog. Approach below is very generic and flexible and can be modified as per requirement easily.
 
