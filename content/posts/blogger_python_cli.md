@@ -19,7 +19,7 @@ the final HTML with all necessary css styles.
 ## Introduction
 We will be creating a commandLine utility in `python` to upload a post in Google blogger.
 
-## Accont Preparation
+## Account Preparation
 * You need to have a `google` account (gmail) (Paid account NOT required).
 * Once you have a google account, Login to *https://console.developers.google.com/apis/credentials* and create a new `Project` here.
 * Click on `Dashboard` on left hand column, and click on `+ ENABLE APIS AND SERVICES`.
@@ -85,6 +85,7 @@ Create following python script in `python-cli` folder.
 ```python
 #! /Users/<username>/BloggerCli/python-2.7.0/bin/python
 
+# https://github.com/googleapis/google-api-python-client/blob/master/docs/README.md
 # https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-server.md
 # https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-installed.md
 # http://googleapis.github.io/google-api-python-client/docs/dyn/blogger_v3.html
@@ -192,4 +193,14 @@ No of posts in blog = 0
 No of posts in blog = 1
 ```
 **Note-1**: While running above script, this will open a browser and wil ask you to login to your google account.
+
 **Note-2**: You may need to change the *FLOW_SERVER_PORT* in above script.
+
+### References used:
+* https://github.com/googleapis/google-api-python-client/blob/master/docs/README.md
+* https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-server.md
+* https://github.com/googleapis/google-api-python-client/blob/master/docs/oauth-installed.md
+* http://googleapis.github.io/google-api-python-client/docs/dyn/blogger_v3.html
+* http://googleapis.github.io/google-api-python-client/docs/dyn/blogger_v3.posts.html
+* https://developers.google.com/identity/protocols/googlescopes
+* https://console.developers.google.com/apis/credentials
