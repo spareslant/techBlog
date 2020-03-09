@@ -2,7 +2,7 @@
 title: "Blogger python cli"
 date: 2020-03-09T18:46:41Z
 tags: ["blogger", "python", "google API", "blogger API"]
-draft: true
+draft: false
 ---
 <!--- Below style are also defined in static/css/my.css file.
 They are repeatedly defined here so that pandoc can generate
