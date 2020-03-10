@@ -41,11 +41,12 @@ We will be creating a commandLine utility in `ruby` to upload a post in Google b
    * OAuth 2.0 Client IDs
    * Service Accounts
    * Click on `+ CREATE CREDENTAILS` on the top and select `OAuth Client ID` from drop down menu.
-      * Select `Application Type` to `other`.
-      * Type in `Name` to `CLI Utility` (it can be any string) and click create.
-      * You will see an entry with name `CLI Utility` under `OAuth 2.0 Client IDs`.
-      * Download the credential files by clicking on a *down arrow* button.
-      * This will be a `json` file and we need it to authenticate it with google `OAuth2.0` services.
+   * Select `Application Type` to `other`.
+   * Type in `Name` to `CLI Utility` (it can be any string) and click create.
+   * You will see an entry with name `CLI Utility` under `OAuth 2.0 Client IDs`.
+   * Download the credential files by clicking on a *down arrow* button.
+   * This will be a `json` file and we need it to authenticate it with google `OAuth2.0` services.
+
 * Login to blogger site *https://www.blogger.com*
    * Sign-in to blogger.
    * Enter a display name you like.
@@ -165,7 +166,9 @@ def create_client_from_outhAccount(scope, oob_uri, user_id, oauth_cred_file)
     credentials = authorizer.get_credentials(user_id)
     if credentials.nil?
         url = authorizer.get_authorization_url(base_url: oob_uri )
-        Launchy.open(url)
+        #Launchy.open(url)
+        puts "Open this URL in Browser and enter the code you got from browser below"
+        puts "URL: #{url}"
         print "enter the code you got from browser here and press Enter: "
         # code = gets
         code = STDIN.gets.chomp

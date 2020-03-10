@@ -41,11 +41,12 @@ We will be creating a commandLine utility in `python` to upload a post in Google
    * OAuth 2.0 Client IDs
    * Service Accounts
    * Click on `+ CREATE CREDENTAILS` on the top and select `OAuth Client ID` from drop down menu.
-      * Select `Application Type` to `other`.
-      * Type in `Name` to `Python Blogger CLI` (it can be any string) and click create.
-      * You will see an entry with name `Python Blogger CLI` under `OAuth 2.0 Client IDs`.
-      * Download the credential files by clicking on a *down arrow* button.
-      * This will be a `json` file and we need it to authenticate it with google `OAuth2.0` services.
+   * Select `Application Type` to `other`.
+   * Type in `Name` to `Python Blogger CLI` (it can be any string) and click create.
+   * You will see an entry with name `Python Blogger CLI` under `OAuth 2.0 Client IDs`.
+   * Download the credential files by clicking on a *down arrow* button.
+   * This will be a `json` file and we need it to authenticate it with google `OAuth2.0` services.
+   
 * Login to blogger site *https://www.blogger.com*
    * Sign-in to blogger.
    * Enter a display name you like.
