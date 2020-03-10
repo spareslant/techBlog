@@ -17,7 +17,7 @@ the final HTML with all necessary css styles.
 </style>
 
 ## Introduction
-We will be creating a commandLine utility in `python` to upload a post in Google blogger.
+We will be creating a commandLine utility in `ruby` to upload a post in Google blogger.
 
 ## Account Preparation
 * You need to have a `google` account (gmail) (Paid account NOT required).
