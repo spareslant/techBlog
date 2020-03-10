@@ -4,17 +4,6 @@ date: 2020-02-29T22:13:36Z
 draft: true
 tags: ['golang']
 ---
-<!--- Below style are also defined in static/css/my.css file.
-They are repeatedly defined here so that pandoc can generate
-the final HTML with all necessary css styles.
---->
-<style>
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-.hlbr {color:#e90001; font-weight: bold;}
-/* <code> tag does not work in blogger. Use following class with span tag */
-.code {color:#f20101; background: #f0f0f0; padding: 0.2em;    
-</style>
 
 * arrays are passed to functions as `passed by value`
 * slices are passed as `references`

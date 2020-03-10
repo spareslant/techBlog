@@ -5,18 +5,6 @@ draft: true
 tags: ["javascript", "ecmascript-6"]
 ---
 
-<!--- Below style are also defined in static/css/my.css file.
-They are repeatedly defined here so that pandoc can generate
-the final HTML with all necessary css styles.
---->
-<style>
-.hl {color: #f155f1;}
-.hlb {color: #f155f1; font-weight: bold;}
-.hlbr {color:#e90001; font-weight: bold;}
-/* <code> tag does not work in blogger. Use following class with span tag */
-.code {color:#f20101; background: #f0f0f0; padding: 0.2em;    
-</style>
-
 ## Function
 Some `functions` have two internal-only methods `[[Call]]` and `[[Construct]]`.
 
