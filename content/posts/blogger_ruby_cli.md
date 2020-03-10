@@ -46,7 +46,7 @@ We will be creating a commandLine utility in `ruby` to upload a post in Google b
    * Note down blog ID (a string after **blogID=**, excluding #allposts) in above URL. We need this ID to put in ruby script.
 
 ## Python environment creation
-I am using following python version.
+I am using following ruby version.
 
 ```bash
 $ ruby --version
