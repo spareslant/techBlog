@@ -1,9 +1,29 @@
 ---
 title: "Blogger ruby cli"
 date: 2020-03-10T00:34:42Z
-draft: false
+draft: true
 tags: ["blogger", "python", "google API", "blogger API"]
 ---
+<!--- Below style are also defined in static/css/my.css file.
+They are repeatedly defined here so that pandoc can generate
+the final HTML with all necessary css styles.
+Note: draft: true above. This prevents publishing it to GitHUB.
+--->
+<style>
+/* To highlight text in Green in pre tag */
+.hl {color: #008A00;}
+/* To highlight text in Bold Green in pre tag */
+.hlb {color: #008A00; font-weight: bold;}
+/* To highlight text in Bold Red in pre tag */
+.hlbr {color:#e90001; font-weight: bold;}
+/* <code> tag does not work in blogger. Use following class with span tag */
+.code {
+    color:#7e168d; 
+    background: #f0f0f0; 
+    padding: 0.1em 0.4em;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+</style>
 
 ## Introduction
 We will be creating a commandLine utility in `ruby` to upload a post in Google blogger.

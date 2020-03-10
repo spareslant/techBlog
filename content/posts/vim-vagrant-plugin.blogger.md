@@ -1,9 +1,29 @@
 ---
 title: "Vim Vagrant Plugin using Vundle"
 date: 2020-02-25T17:13:09Z
-draft: false
+draft: true
 tags: ["vim", "vagrantfile plugin", "Vundle"]
 ---
+<!--- Below style are also defined in static/css/my.css file.
+They are repeatedly defined here so that pandoc can generate
+the final HTML with all necessary css styles.
+Note: draft: true above. This prevents publishing it to GitHUB.
+--->
+<style>
+/* To highlight text in Green in pre tag */
+.hl {color: #008A00;}
+/* To highlight text in Bold Green in pre tag */
+.hlb {color: #008A00; font-weight: bold;}
+/* To highlight text in Bold Red in pre tag */
+.hlbr {color:#e90001; font-weight: bold;}
+/* <code> tag does not work in blogger. Use following class with span tag */
+.code {
+    color:#7e168d; 
+    background: #f0f0f0; 
+    padding: 0.1em 0.4em;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+</style>
 
 ## Introduction
 We will be installing *VIM* vagrant plugin using *Vundle*. This assumes that you have already configured your *VIM* to use *Vundle*
@@ -51,7 +71,7 @@ Plugin 'file:///</full/path/to/home/dir>/.vim/vagrantfile'
 ```
 `.vimrc` file will look like below:
 
-```
+<pre>
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -59,7 +79,7 @@ filetype off                  " required
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'file:///</full/path/to/home/dir>/.vim/vagrantfile'
+<span class="hlb">Plugin 'file:///</full/path/to/home/dir>/.vim/vagrantfile'</span>
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -72,7 +92,7 @@ filetype indent on
 syntax on
 " color desert
 " color lettuce
-```
+</pre>
 
 ## Activate `vagrantfile` plugin
 Run following command to install the plugin and activate it.

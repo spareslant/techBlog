@@ -1,9 +1,29 @@
 ---
 title: "SSL Certificate Mutual Authentication"
 date: 2019-07-17T21:35:50+01:00
-draft: false
+draft: true
 tags: ["SSL", "openssl", "Digital Certificates", "pki", "SSL mutual authentication", "x509", "CA", "curl"]
 ---
+<!--- Below style are also defined in static/css/my.css file.
+They are repeatedly defined here so that pandoc can generate
+the final HTML with all necessary css styles.
+Note: draft: true above. This prevents publishing it to GitHUB.
+--->
+<style>
+/* To highlight text in Green in pre tag */
+.hl {color: #008A00;}
+/* To highlight text in Bold Green in pre tag */
+.hlb {color: #008A00; font-weight: bold;}
+/* To highlight text in Bold Red in pre tag */
+.hlbr {color:#e90001; font-weight: bold;}
+/* <code> tag does not work in blogger. Use following class with span tag */
+.code {
+    color:#7e168d; 
+    background: #f0f0f0; 
+    padding: 0.1em 0.4em;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+</style>
 
 # Introduction
 We will be creating our own CA (Certificate Authority), CSR (Certificate Signing Request), signed certificate. We will be creating server side and client side certificate and will verify them using `openssl` and `curl`.
@@ -224,16 +244,16 @@ myCAkey.pem
 ```
 
 ## Check CA certificate
-```
+<pre>
 $ openssl x509 -in caCert/myCA.crt -text -noout
 
-Certificate:
+<span class="hlb">Certificate:</span>
     Data:
         Version: 3 (0x2)
         Serial Number:
             67:4e:dd:00:82:65:95:e0:92:91:70:52:2a:35:cc:bb:33:57:78:22
         Signature Algorithm: sha256WithRSAEncryption
-        Issuer: emailAddress = user@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, CN = root CA
+        Issuer: emailAddress = user@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = root CA</span>
         Validity
             Not Before: Aug  3 10:43:28 2019 GMT
             Not After : Apr 29 10:43:28 2022 GMT
@@ -268,9 +288,9 @@ Certificate:
                 keyid:E2:E6:68:05:8F:90:98:4F:36:E7:60:1A:B5:C8:95:FE:14:D8:84:20
 
             X509v3 Basic Constraints: critical
-                CA:TRUE
+                <span class="hlb">CA:TRUE</span>
             Netscape Cert Type: 
-                SSL CA, S/MIME CA
+                <span class="hlb">SSL CA, S/MIME CA</span>
     Signature Algorithm: sha256WithRSAEncryption
          30:f7:ec:d8:ac:81:55:89:d4:51:89:a7:4a:58:87:b0:7a:3d:
          97:dc:96:4e:1f:77:77:ed:b8:33:af:ee:4e:b6:3c:66:d0:b4:
@@ -287,16 +307,16 @@ Certificate:
          59:40:4f:93:81:f6:ee:4a:19:fa:05:7c:78:13:84:b9:17:25:
          26:20:ca:37:84:04:41:61:22:f3:87:fc:76:3c:72:ef:f7:d6:
          f7:e6:61:b7
-```
+</pre>
 
 ## Verify CA certificate
-```
+<pre>
 $ openssl verify -verbose  caCert/myCA.crt
 
 emailAddress = user@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, CN = root CA
 error 18 at 0 depth lookup: self signed certificate
-error caCert/myCA.crt: verification failed
-```
+<span class="hlbr">error caCert/myCA.crt: verification failed</span>
+</pre>
 
 **Note:** Above verification failed because this CA cert is self signed and is NOT issued by certified authority.
 
@@ -308,17 +328,17 @@ caCert/myCA.crt: OK
 ```
 
 ## Create a CSR request for server.
-```
+<pre>
 $ openssl req \
--config <(cat opensslConf/csr_openssl.cnf</span> opensslConf/<span class="hlb">server_san_names.cnf) \
+-config <(cat opensslConf/<span class="hlb">csr_openssl.cnf</span> opensslConf/<span class="hlb">server_san_names.cnf</span>) \
 -new \
 -newkey rsa:2048 \
 -nodes \
 -days 365 \
 -out CSRs/server.csr \
 -keyout privateKeys/serverKey.pem \
--reqexts server \
--subj "/emailAddress=user2@junkemail.com/C=GB/ST=London/L=City of London/O=My Organization/OU=Engg/CN=myhost.full.domain.name"
+-reqexts <span class="hlb">server</span> \
+-subj "/emailAddress=user2@junkemail.com/C=GB/ST=London/L=City of London/O=My Organization/OU=Engg/<span class="hlb">CN=myhost.full.domain.name"</span>
 
 Ignoring -days; not generating a certificate
 Generating a RSA private key
@@ -326,7 +346,7 @@ Generating a RSA private key
 ........+++++
 writing new private key to 'privateKeys/serverKey.pem'
 -----
-```
+</pre>
 
 ```bash
 $ ls -1 CSRs/
@@ -334,9 +354,9 @@ server.csr
 ```
 
 ## Create a CSR request for client.
-```
+<pre>
 $ openssl req \
--config <(cat opensslConf/csr_openssl.cnf</span> opensslConf/<span class="hlb">client_san_names.cnf) \
+-config <(cat opensslConf/<span class="hlb">csr_openssl.cnf</span> opensslConf/<span class="hlb">client_san_names.cnf</span>) \
 -new \
 -newkey rsa:2048 \
 -nodes \
@@ -344,7 +364,7 @@ $ openssl req \
 -out CSRs/myClient.csr \
 -keyout privateKeys/myClientKey.pem \
 -reqexts client \
--subj "/emailAddress=user3@some.com/C=GB/ST=London/L=City of London/O=My Organization/OU=Engg/CN=client.full.domain.name"
+-subj "/emailAddress=user3@some.com/C=GB/ST=London/L=City of London/O=My Organization/OU=Engg/<span class="hlb">CN=client.full.domain.name</span>"
 
 Ignoring -days; not generating a certificate
 Generating a RSA private key
@@ -352,7 +372,7 @@ Generating a RSA private key
 .............+++++
 writing new private key to 'privateKeys/myClientKey.pem'
 -----
-```
+</pre>
 
 ```bash
 $ ls -og privateKeys/
@@ -367,13 +387,13 @@ total 8
 ```
 
 ### Check Server CSR request
-```
-$ openssl req -in CSRs/server.csr -text -noout
+<pre>
+$ openssl <span class="hlb">req</span> -in CSRs/server.csr -text -noout
 
-Certificate Request:
+<span class="hlb">Certificate Request:</span>
     Data:
         Version: 1 (0x0)
-        Subject: emailAddress = user2@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, CN = myhost.full.domain.name
+        Subject: emailAddress = user2@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = myhost.full.domain.name</span>
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 RSA Public-Key: (2048 bit)
@@ -400,9 +420,9 @@ Certificate Request:
         Attributes:
         Requested Extensions:
             X509v3 Basic Constraints: 
-                CA:FALSE
+                <span class="hlb">CA:FALSE</span>
             Netscape Cert Type: 
-                SSL Server
+                <span class="hlb">SSL Server</span>
             X509v3 Key Usage: 
                 Digital Signature, Non Repudiation, Key Encipherment
             Netscape Comment: 
@@ -410,8 +430,8 @@ Certificate Request:
             X509v3 Subject Key Identifier: 
                 10:AB:8E:14:C4:C3:01:06:E8:77:4B:30:A3:B9:B0:18:8C:51:13:D7
             X509v3 Extended Key Usage: 
-                TLS Web Server Authentication
-            X509v3 Subject Alternative Name: 
+                <span class="hlb">TLS Web Server Authentication</span>
+            <span class="hlb">X509v3 Subject Alternative Name:</span> 
                 DNS:myhost.full.domain.name
     Signature Algorithm: sha256WithRSAEncryption
          43:6f:f5:64:34:87:2d:69:d0:80:f2:0d:6b:ec:ae:86:00:0c:
@@ -429,16 +449,16 @@ Certificate Request:
          91:dd:e5:e0:24:ae:a6:1d:ef:10:60:af:72:15:5e:eb:98:30:
          63:f8:b5:2a:1e:fc:1d:b5:1f:01:2c:93:72:48:78:b8:ec:2c:
          ca:44:5a:e8
-```
+</pre>
 
 ### Check client CSR request
-```
-$ openssl req -in CSRs/myClient.csr -text -noout
+<pre>
+$ openssl <span class="hlb">req</span> -in CSRs/myClient.csr -text -noout
 
-Certificate Request:
+<span class="hlb">Certificate Request:</span>
     Data:
         Version: 1 (0x0)
-        Subject: emailAddress = user3@some.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, CN = client.full.domain.name
+        Subject: emailAddress = user3@some.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = client.full.domain.name</span>
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 RSA Public-Key: (2048 bit)
@@ -465,9 +485,9 @@ Certificate Request:
         Attributes:
         Requested Extensions:
             X509v3 Basic Constraints: 
-                CA:FALSE
+                <span class="hlb">CA:FALSE</span>
             Netscape Cert Type: 
-                SSL Client, S/MIME
+                <span class="hlb">SSL Client, S/MIME</span>
             X509v3 Key Usage: 
                 Digital Signature, Non Repudiation, Key Encipherment
             Netscape Comment: 
@@ -475,8 +495,8 @@ Certificate Request:
             X509v3 Subject Key Identifier: 
                 7C:9D:A8:26:60:12:31:DE:88:21:FB:EA:9C:77:B9:B1:38:E0:52:67
             X509v3 Extended Key Usage: 
-                TLS Web Client Authentication
-            X509v3 Subject Alternative Name: 
+                <span class="hlb">TLS Web Client Authentication</span>
+            <span class="hlb">X509v3 Subject Alternative Name:</span> 
                 DNS:client.full.domain.name
     Signature Algorithm: sha256WithRSAEncryption
          26:69:46:d5:5b:69:af:a5:16:69:03:0f:e7:2a:ca:f1:38:e0:
@@ -494,12 +514,12 @@ Certificate Request:
          0c:ae:51:e3:0c:d0:f3:bd:91:3e:99:7d:f8:d3:eb:e4:86:da:
          08:01:ec:46:2b:0c:76:65:61:c9:4e:cb:17:60:bf:72:55:6d:
          44:73:25:66
-```
+</pre>
 
 ## Sign Server CSR and generate server certificate
-```
+<pre>
 $ openssl ca \
--config opensslConf/CA_openssl.cnf \
+-config <span class="hlb">opensslConf/CA_openssl.cnf</span> \
 -policy policy_anything \
 -cert caCert/myCA.crt \
 -keyfile caCert/myCAkey.pem \
@@ -545,7 +565,7 @@ Sign the certificate? [y/n]:y
 1 out of 1 certificate requests certified, commit? [y/n]y
 Write out database with 1 new entries
 Data Base Updated
-```
+</pre>
 
 ```bash
 $ ls -og  newCreatedCerts/
@@ -554,19 +574,19 @@ total 16
 -rw-rw-r--. 1 5035 Aug  3 12:40 serverCert.pem
 ```
 ### check signed server certificate
-```
-$ openssl x509 -in newCreatedCerts/serverCert.pem -text -noout
+<pre>
+$ openssl <span class="hlb">x509</span> -in newCreatedCerts/serverCert.pem -text -noout
 
-Certificate:
+<span class="hlb">Certificate:</span>
     Data:
         Version: 3 (0x2)
         Serial Number: 16 (0x10)
         Signature Algorithm: sha256WithRSAEncryption
-        Issuer:</span> emailAddress = user@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = root CA
+        <span class="hlb">Issuer:</span> emailAddress = user@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = root CA</span>
         Validity
             Not Before: Aug  3 11:40:34 2019 GMT
             Not After : Aug  2 11:40:34 2020 GMT
-        Subject:</span> C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = myhost.full.domain.name, emailAddress = user2@junkemail.com
+        <span class="hlb">Subject:</span> C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = myhost.full.domain.name</span>, emailAddress = user2@junkemail.com
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 RSA Public-Key: (2048 bit)
@@ -592,9 +612,9 @@ Certificate:
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
             X509v3 Basic Constraints: 
-                CA:FALSE
+                <span class="hlb">CA:FALSE</span>
             Netscape Cert Type: 
-                SSL Server
+                <span class="hlb">SSL Server</span>
             X509v3 Key Usage: 
                 Digital Signature, Non Repudiation, Key Encipherment
             Netscape Comment: 
@@ -602,9 +622,9 @@ Certificate:
             X509v3 Subject Key Identifier: 
                 10:AB:8E:14:C4:C3:01:06:E8:77:4B:30:A3:B9:B0:18:8C:51:13:D7
             X509v3 Extended Key Usage: 
-                TLS Web Server Authentication
+                <span class="hlb">TLS Web Server Authentication</span>
             X509v3 Subject Alternative Name: 
-                DNS:myhost.full.domain.name
+                <span class="hlb">DNS:myhost.full.domain.name</span>
     Signature Algorithm: sha256WithRSAEncryption
          2d:f2:ec:1d:96:98:d7:4c:4e:f7:5d:83:e1:f6:b7:99:77:cc:
          31:30:5e:e1:7f:75:a1:b9:aa:b1:f2:e9:20:8c:fe:87:be:01:
@@ -621,7 +641,7 @@ Certificate:
          26:38:d7:63:15:4b:6e:82:6f:fe:fe:9e:fc:e5:3a:6c:37:06:
          72:1f:c9:dc:e4:69:da:1e:31:30:63:d0:2c:cd:a1:e8:f0:ce:
          e3:9d:36:a8
-```
+</pre>
 
 ### Verify server certificate
 ```bash
@@ -631,9 +651,9 @@ newCreatedCerts/serverCert.pem: OK
 ```
 
 ## Sign client CSR and generate client certificate
-```
+<pre>
 $ openssl ca \
--config opensslConf/CA_openssl.cnf \
+-config <span class="hlb">opensslConf/CA_openssl.cnf</span> \
 -policy policy_anything \
 -cert caCert/myCA.crt \
 -keyfile caCert/myCAkey.pem \
@@ -679,7 +699,7 @@ Sign the certificate? [y/n]:y
 1 out of 1 certificate requests certified, commit? [y/n]y
 Write out database with 1 new entries
 Data Base Updated
-```
+</pre>
 
 ```bash
 $ ls -og newCreatedCerts/
@@ -690,19 +710,19 @@ total 32
 -rw-rw-r--. 1 5035 Aug  3 12:40 serverCert.pem
 ```
 ### check client certificate
-```
- $ openssl x509 -in newCreatedCerts/myClientCert.pem -text -noout 
+<pre>
+ $ openssl <span class="hlb">x509</span> -in newCreatedCerts/myClientCert.pem -text -noout 
 
-Certificate:
+<span class="hlb">Certificate:</span>
     Data:
         Version: 3 (0x2)
         Serial Number: 17 (0x11)
         Signature Algorithm: sha256WithRSAEncryption
-        Issuer:</span> emailAddress = user@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = root CA
+        <span class="hlb">Issuer:</span> emailAddress = user@junkemail.com, C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = root CA</span>
         Validity
             Not Before: Aug  3 12:18:30 2019 GMT
             Not After : Aug  2 12:18:30 2020 GMT
-        Subject:</span> C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = client.full.domain.name, emailAddress = user3@some.com
+        <span class="hlb">Subject:</span> C = GB, ST = London, L = City of London, O = My Organization, OU = Engg, <span class="hlb">CN = client.full.domain.name</span>, emailAddress = user3@some.com
         Subject Public Key Info:
             Public Key Algorithm: rsaEncryption
                 RSA Public-Key: (2048 bit)
@@ -728,9 +748,9 @@ Certificate:
                 Exponent: 65537 (0x10001)
         X509v3 extensions:
             X509v3 Basic Constraints: 
-                CA:FALSE
+                <span class="hlb">CA:FALSE</span>
             Netscape Cert Type: 
-                SSL Client, S/MIME
+                <span class="hlb">SSL Client, S/MIME</span>
             X509v3 Key Usage: 
                 Digital Signature, Non Repudiation, Key Encipherment
             Netscape Comment: 
@@ -738,8 +758,8 @@ Certificate:
             X509v3 Subject Key Identifier: 
                 7C:9D:A8:26:60:12:31:DE:88:21:FB:EA:9C:77:B9:B1:38:E0:52:67
             X509v3 Extended Key Usage: 
-                TLS Web Client Authentication
-            X509v3 Subject Alternative Name: 
+                <span class="hlb">TLS Web Client Authentication</span>
+            <span class="hlb">X509v3 Subject Alternative Name:</span> 
                 DNS:client.full.domain.name
     Signature Algorithm: sha256WithRSAEncryption
          7d:20:3f:08:50:20:83:2d:27:d2:2e:1c:2d:50:f5:d4:bd:47:
@@ -757,7 +777,7 @@ Certificate:
          81:5f:94:14:4f:49:b8:8d:1a:ad:29:bd:fd:cd:a1:46:71:d9:
          0b:9a:50:d3:97:8e:13:a5:d0:5a:1a:65:44:f1:d9:01:1a:65:
          27:16:d1:f0
-```
+</pre>
 
 ## Verify Client/Server connectivity using certs.
 Please note that our server certificate was created using `CN=myhost.full.domain.name`. This is imaginary hostname but client must use `myhost.full.domain.name` to connect to server.
@@ -794,15 +814,15 @@ ACCEPT
 ```
 #### Fetch `atest.html` file `insecurely`.
 insecure fetch
-```
-$ curl https://localhost:9999/serveContent/atest.html --insecure
+<pre>
+$ curl https://localhost:9999/serveContent/atest.html <span class="hlb">--insecure</span>
 openssl page served.
-```
+</pre>
 
 #### Fetch `atest.html` file `securely`.
 secure fetch
-```
-$ curl https://localhost:9999/serveContent/atest.html --cacert caCert/myCA.crt
+<pre>
+$ curl https://localhost:9999/serveContent/atest.html <span class="hlb">--cacert caCert/myCA.crt</span>
 
 curl: (60) SSL: no alternative certificate subject name matches target host name 'localhost'
 More details here: https://curl.haxx.se/docs/sslcerts.html
@@ -810,7 +830,7 @@ More details here: https://curl.haxx.se/docs/sslcerts.html
 curl failed to verify the legitimacy of the server and therefore could not
 establish a secure connection to it. To learn more about this situation and
 how to fix it, please visit the web page mentioned above.
-```
+</pre>
 
 **Note:** The error above is due to the mismatch between client calling the server name as `localhost` and certificate's `SAN` name as `myhost.full.domain.name`
 
@@ -831,8 +851,8 @@ nameserver 127.0.0.1
 #### Start a temp `DNS` server as following
 DNS server starting.
 
-```
-$ sudo dnsmasq --no-daemon --listen-address=127.0.0.1 --address=/full.domain.name/127.0.0.1 --log-queries
+<pre>
+$ sudo dnsmasq --no-daemon --listen-address=127.0.0.1 --address=/<span class="hlb">full.domain.name</span>/127.0.0.1 --log-queries
 
 dnsmasq: started, version 2.80 cachesize 150
 dnsmasq: compile time options: IPv6 GNU-getopt DBus no-i18n IDN2 DHCP DHCPv6 no-Lua TFTP no-conntrack ipset auth DNSSEC loop-detect inotify dumpfile
@@ -840,7 +860,7 @@ dnsmasq: reading /etc/resolv.conf
 dnsmasq: ignoring nameserver 127.0.0.1 - local interface
 dnsmasq: using nameserver 192.168.97.2#53
 dnsmasq: read /etc/hosts - 2 addresses
-```
+</pre>
 
 ```bash
 $ host myhost.full.domain.name
@@ -848,14 +868,14 @@ myhost.full.domain.name has address 127.0.0.1
 ```
 #### Fetch `atest.html` file securely after DNS resolution fix.
 secure fetch.
-```
-$ curl https://myhost.full.domain.name:9999/serveContent/atest.html --cacert caCert/myCA.crt
+<pre>
+$ curl https://myhost.full.domain.name:9999/serveContent/atest.html --cacert <span class="hlb">caCert/myCA.crt</span>
 openssl page served.
-```
+</pre>
 
 ## Attemps to connect and fetch a page from server (WITH mutual auth)
 ### Start openssl server in client verification mode.
-```
+<pre>
 $ openssl s_server \
 -accept 9999 \
 -CAfile caCert/myCA.crt \
@@ -863,12 +883,12 @@ $ openssl s_server \
 -key privateKeys/serverKey.pem \
 -state \
 -WWW \
--Verify 1
+<span class="hlb">-Verify 1</span>
 
 verify depth is 1, must return a certificate
 Using default temp DH parameters
 ACCEPT
-```
+</pre>
 
 #### Fetch `atest.html` in `insecure` way
 insecure fetch

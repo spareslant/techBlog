@@ -1,10 +1,30 @@
 ---
 title: "Docker Logging With Rsyslog"
 date: 2019-07-27T12:15:28+01:00
-draft: false
+draft: true
 lang: en-GB
 tags: ["docker", "rsyslog", "syslog", "logging"]
 ---
+<!--- Below style are also defined in static/css/my.css file.
+They are repeatedly defined here so that pandoc can generate
+the final HTML with all necessary css styles.
+Note: draft: true above. This prevents publishing it to GitHUB.
+--->
+<style>
+/* To highlight text in Green in pre tag */
+.hl {color: #008A00;}
+/* To highlight text in Bold Green in pre tag */
+.hlb {color: #008A00; font-weight: bold;}
+/* To highlight text in Bold Red in pre tag */
+.hlbr {color:#e90001; font-weight: bold;}
+/* <code> tag does not work in blogger. Use following class with span tag */
+.code {
+    color:#7e168d; 
+    background: #f0f0f0; 
+    padding: 0.1em 0.4em;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+</style>
 
 ## Introduction
 This document will describe a simple strategy to logging for docker container using Rsyslog. Often we may have to run multiple containers on single machine. We may require logging for different container in different directories or files. This can be achieved using Rsyslog. Approach below is very generic and flexible and can be modified as per requirement easily.
@@ -12,9 +32,9 @@ This document will describe a simple strategy to logging for docker container us
 ## Running Docker with syslog logging
 I use following command to run docker container.
 
-```
-docker run --rm --log-driver=syslog  --log-opt tag="{{.ImageName}}/{{.Name}}/{{.ID}}" ubuntu echo atestoutput
-```
+<pre>
+docker run --rm --log-driver=syslog  --log-opt tag=<span class="hl">"{{.ImageName}}/{{.Name}}/{{.ID}}"</span> ubuntu echo atestoutput
+</pre>
 
 Above command will append a line similar to following line in `/var/log/syslog` file.
 ```
