@@ -2,6 +2,7 @@
 title: "Blogger Go Cli"
 date: 2020-03-14T21:16:00Z
 draft: false
+tags: ["blogger", "Go", "google API", "blogger API", "Golang"]
 ---
 ## Introduction
 We will be creating a commandLine utility in `Go` to upload a post in Google blogger.

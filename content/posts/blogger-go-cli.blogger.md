@@ -2,6 +2,7 @@
 title: "Blogger Go Cli"
 date: 2020-03-14T21:16:00Z
 draft: true
+tags: ["blogger", "Go", "google API", "blogger API", "Golang"]
 ---
 <!--- Below style are also defined in static/css/my.css file.
 They are repeatedly defined here so that pandoc can generate
