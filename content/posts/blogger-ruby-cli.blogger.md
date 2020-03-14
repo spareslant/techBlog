@@ -55,7 +55,7 @@ We will be creating a commandLine utility in `ruby` to upload a post in Google b
    * On next screen, look at the address bar of browser, it will be like *https://www.blogger.com/blogger.g?blogID=3342324243435#allposts*
    * Note down blog ID (a string after **blogID=**, excluding #allposts) in above URL. We need this ID to put in ruby script.
 
-## Python environment creation
+## Ruby environment creation
 I am using following ruby version.
 
 ```bash
