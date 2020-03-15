@@ -28,13 +28,67 @@ Note: draft: true above. This prevents publishing it to GitHUB.
 ## Introduction
 We will be converting a `markup` file to a `blogger` compatible `html`.
 
-## Use pandoc
+## Install `pandoc` and `GitHUB html5` Template
 Install `pandoc` using URL *https://pandoc.org/installing.html* . Create a workspace and clone following git repos in that workspace area.
 ```bash
 mkdir $HOME/panDocs
 cd $HOME/panDocs
 git clone https://github.com/tajmone/pandoc-goodies.git
+cd pandoc-goodies/templates/html5/github/src
 ```
+
+### Modify above `GitHUB html5 template` source code for blogger.
+Make the `padding` and `max-width` changes in `_github-markdown.scss` file as follows:
+
+```diff
+$ git diff templates/html5/github/src/_github-markdown.scss
+diff --git a/templates/html5/github/src/_github-markdown.scss b/templates/html5/github/src/_github-markdown.scss
+index 479b5fc..54c9abb 100644
+--- a/templates/html5/github/src/_github-markdown.scss
++++ b/templates/html5/github/src/_github-markdown.scss
+@@ -48,9 +48,9 @@
+   word-wrap: break-word;
+   box-sizing: border-box;
+   min-width: 200px;
+-  max-width: 980px;
++  max-width: 100%;
+   margin: 0 auto;
+-  padding: 45px;
++  padding: 45px 5px;
+
+   a {
+     color: #0366d6;
+```
+
+Change the css source file name in `src/css-injector.js` as follows:
+```diff
+$ git diff css-injector.js
+diff --git a/templates/html5/github/src/css-injector.js b/templates/html5/github/src/css-injector.js
+index 861494d..14b5597 100644
+--- a/templates/html5/github/src/css-injector.js
++++ b/templates/html5/github/src/css-injector.js
+@@ -16,7 +16,7 @@ This script will:
+ */
+
+ templateFile  = "GitHub_source.html5" // Template with CSS-injection placeholder
+-cssFile       = "GitHub.min.css"      // CSS source to inject into placeholder
++cssFile       = "GitHub.css"      // CSS source to inject into placeholder
+ outFile       = "../GitHub.html5"     // Final template output file
+ placeHolder   = "{{CSS-INJECT}}"      // Placeholder string for CSS-injection
+```
+
+### Compile scss file.
+Note: You need to install `node` on your system in order to compile.
+```bash
+cd pandoc-goodies/templates/html5/github/src
+npm init -y
+npm install node-sass
+./node_modules/node-sass/bin/node-sass --source-map true --output-style=expanded --indent-type space GitHub.scss > GitHub.css
+node css-injector.js
+```
+
+**Note**: You can clone pre-compiled code from `https://github.com/spareslant/markup_to_GitHUB_HTML5_and_PDF.git` as well.
+
 * `pandoc-goodies` is to generate `html` files.
 
 ## Create a sample markup file.

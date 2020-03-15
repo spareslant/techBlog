@@ -79,6 +79,7 @@ WORKSPACE=$(pwd)
 cd "$WORKSPACE"
 mkdir -p src bin pkg
 export GOPATH=$WORKSPACE
+export GOBIN=$WORKSPACE/bin
 ```
 
 Create directory structure
@@ -128,18 +129,17 @@ import (
 	"google.golang.org/api/option"
 )
 
-func printNoOfPosts(postListCall *blogger.PostsListCall) {
-	postList, err := postListCall.Do()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Printf("Total posts in this blog: %d\n", len(postList.Items))
-}
-
 func checkErrorAndExit(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func printNoOfPosts(postsService *blogger.PostsService, BlogID string) {
+	postListCall := postsService.List(BlogID).MaxResults(500)
+	postList, err := postListCall.Do()
+	checkErrorAndExit(err)
+	fmt.Printf("Total posts in this blog: %d\n", len(postList.Items))
 }
 
 func getBloggerClient() *blogger.Service {
@@ -152,10 +152,11 @@ func getBloggerClient() *blogger.Service {
 	checkErrorAndExit(err)
 
 	url := conf.AuthCodeURL("state")
-	fmt.Printf("Visit the URL for the auth dialog: %v\n", url)
+	fmt.Println("Visit the following URL for the auth dialog:")
+	fmt.Printf("\n%v\n", url)
 
 	var code string
-	fmt.Printf("Enter the code obtained from above here: ")
+	fmt.Printf("\nEnter the code obtained from above here: ")
 	fmt.Scanln(&code)
 
 	token, err := conf.Exchange(oauth2.NoContext, code)
@@ -184,12 +185,80 @@ func checkMandatoryArguments(args []*string) {
 	}
 }
 
+func createNewPost(title *string, labels *string, fileToUpload *string) *blogger.Post {
+
+	labelsSlice := strings.Split(*labels, ",")
+	contents, err := ioutil.ReadFile(*fileToUpload)
+	checkErrorAndExit(err)
+
+	newPost := blogger.Post{}
+
+	if len(*labels) == 0 {
+		newPost = blogger.Post{
+			Content: string(contents),
+			Title:   *title,
+		}
+	} else {
+		newPost = blogger.Post{
+			Content: string(contents),
+			Labels:  labelsSlice,
+			Title:   *title,
+		}
+	}
+	return &newPost
+}
+
+func insertAPost(title *string, labels *string, fileToUpload *string, BlogID string, postsService *blogger.PostsService) {
+	fmt.Println("============= Inserting a new Post ===============")
+
+	newPost := createNewPost(title, labels, fileToUpload)
+
+	postInsertCall := postsService.Insert(BlogID, newPost)
+	post, err := postInsertCall.Do()
+	checkErrorAndExit(err)
+	fmt.Println("A new post added to Blog with following details")
+	fmt.Printf("Title: %s\nPostID: %s\n", post.Title, post.Id)
+	fmt.Println("=================================================")
+	printNoOfPosts(postsService, BlogID)
+}
+
+func updateAPost(title *string, labels *string, fileToUpload *string, BlogID string, postsService *blogger.PostsService, postID string) {
+	fmt.Println("============= updating a Post ===============")
+
+	// Search post from Title if postID not specified.
+	if len(postID) == 0 {
+		postsSearchCall := postsService.Search(BlogID, *title)
+		postsList, err := postsSearchCall.Do()
+		checkErrorAndExit(err)
+		if len(postsList.Items) > 1 {
+			fmt.Printf("Following multiple posts found for title = %s\n", *title)
+			for _, post := range postsList.Items {
+				fmt.Println(post.Title)
+			}
+			log.Fatal("\n\nERROR: Not updating post. Title must identify a single post only. Try specifying PostID")
+		} else {
+			postID = postsList.Items[0].Id
+		}
+	}
+
+	newPost := createNewPost(title, labels, fileToUpload)
+	postsPatchCall := postsService.Patch(BlogID, postID, newPost)
+	post, err := postsPatchCall.Do()
+	checkErrorAndExit(err)
+	fmt.Println("Following post has been updated in Blog with following details")
+	fmt.Printf("Title: %s\nPostID: %s\n", post.Title, post.Id)
+	fmt.Println("=================================================")
+	printNoOfPosts(postsService, BlogID)
+}
+
 func main() {
 
 	fileToUpload := flag.String("f", "", "html file to upload (mandatory)")
 	title := flag.String("t", "", "Post title (mandatory)")
 	blogid := flag.String("b", "", "Blod ID (mandatory)")
 	labels := flag.String("l", "", "comma separated list of labels (optional)")
+	modify := flag.Bool("m", false, "Modify a post contents (optional: modifies post in mentioned in -t )")
+	postID := flag.String("p", "", "post ID (optional: To be specified when updating a post)")
 	flag.Parse()
 
 	if flag.NFlag() == 0 {
@@ -201,44 +270,61 @@ func main() {
 	checkMandatoryArguments(mandatoryArgs)
 
 	BlogID := *blogid
+	PostID := *postID
 
 	bloggerService := getBloggerClient()
-	postService := bloggerService.Posts
-	postListCall := postService.List(BlogID).MaxResults(500)
-	printNoOfPosts(postListCall)
+	postsService := bloggerService.Posts
 
-	fmt.Println("============= Inserting a new Post ===============")
+	printNoOfPosts(postsService, BlogID)
 
-	labelsSlice := strings.Split(*labels, ",")
-	contents, err := ioutil.ReadFile(*fileToUpload)
-	checkErrorAndExit(err)
-
-	newPost := blogger.Post{
-		Content: string(contents),
-		Labels:  labelsSlice,
-		Title:   *title,
+	if !*modify {
+		insertAPost(title, labels, fileToUpload, BlogID, postsService)
+	} else {
+		updateAPost(title, labels, fileToUpload, BlogID, postsService, PostID)
 	}
-
-	postInsertCall := postService.Insert(BlogID, &newPost)
-	_, postErr := postInsertCall.Do()
-	checkErrorAndExit(postErr)
-	printNoOfPosts(postListCall)
-
 }
 ```
 
-### Run the script
+### Create a test file to be uploaded.
+```bash
+echo 'This is a first post' > sometext.txt
+```
+**Note**: You can create an HTML file as well.
+
+## Run the script
+### Create a New Post
 ```bash
 $ cd BloggerCli/go-cli/src/blogger
 
-$ go run bloggerCli.go -b 232343232322 -f sometext.html -t "A some post test" -l "label1,label2"
-Visit the URL for the auth dialog: https://accounts.google.com/o/oauth2/auth?client_id=566343445-c4pv4srn6ms7ddbn956Hjj8.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fblogger&state=state
+$ go run bloggerCli.go -b 232343232322 -f sometext.txt -t "A new Post" -l "label1,label2"
+Visit the URL for the auth dialog: https://accounts.google.com/o/oauth2/auth?client_id=99999999-ccc55566666iiioo999ddd.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fblogger&state=state
 Enter the code obtained from above here: 9/rf7hM-sds98JnHgsdK90OiYhsss790NHdsaDs
-Total posts in this blog: 50
+Total posts in this blog: 51
 ============= Inserting a new Post ===============
+A new post added to Blog with following details
+Title: A new Post
+PostID: 2344555555555999
+=================================================
+Total posts in this blog: 52
+```
+
+### Update a Post
+```bash
+$ cd BloggerCli/go-cli/src/blogger
+
+$ go run bloggerCli.go -b 232343232322 -f sometext.txt -t "Multiple Vms Vagrantfile" -m
+Visit the URL for the auth dialog: https://accounts.google.com/o/oauth2/auth?client_id=99999999-ccc55566666iiioo999ddd.apps.googleusercontent.com&redirect_uri=urn%3Aietf%3Awg%3Aoauth%3A2.0%3Aoob&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fblogger&state=state
+Enter the code obtained from above here: 9/rf7hM-sds98JnHgsdK90OiYhsss790NHdsaDs
+Total posts in this blog: 51
+============= updating a Post ===============
+Following post has been updated in Blog with following details
+Title: Multiple Vms Vagrantfile
+PostID: 334556669992323
+=================================================
 Total posts in this blog: 51
 ```
 **Note:** You need to open the `URL` mentioned in the above output in a browser and authorize the request. This will return a `code` that need to enter above.
+
 
 ### References used
 * https://pkg.go.dev/google.golang.org/api/blogger/v3?tab=doc
