@@ -233,9 +233,9 @@ func updateAPost(title *string, labels *string, fileToUpload *string, BlogID str
 		if len(postsList.Items) > 1 {
 			fmt.Printf("Following multiple posts found for title = %s\n", *title)
 			for _, post := range postsList.Items {
-				fmt.Println(post.Title)
+				fmt.Printf("PostID: %s, Title: %s\n", post.Id, post.Title)
 			}
-			log.Fatal("\n\nERROR: Not updating post. Title must identify a single post only. Try specifying PostID")
+			log.Fatal("\n\nERROR: Not updating post. Title must identify a single post only. Try specifying PostID using -p flag")
 		} else {
 			postID = postsList.Items[0].Id
 		}
