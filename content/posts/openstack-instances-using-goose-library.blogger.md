@@ -1,7 +1,7 @@
 ---
 title: "Remote OpenStack Instances Using Goose library (using Nova networking)"
 date: 2020-03-16T23:04:49Z
-draft: false
+draft: true
 tags: ["goose", "openstack", "Go"]
 ---
 
