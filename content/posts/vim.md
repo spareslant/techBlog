@@ -111,3 +111,21 @@ tags: ["vim"]
 ## Join range of lines 
 * `3J` => join three lines
 * `4,5j` => join lines from 4 to 5
+
+## Vim Dir explorer
+* open vim and run `:Lexplore`, then `:vertical resize 40`
+* optional settings: let g:netrw_browse_split = <number>
+
+## Paste a command output in the file
+* `:read ! ls -l` => will paste the output of ls -l command into current cursor position
+
+## vscode change change escape key binding
+* in vscode => settings => vim: Handle Keys => Add following
+```
+"vim.insertModeKeyBindingNonRecursive" : [
+   {
+      "before": ["§"],
+      "after": ["<ESC>"]
+   }
+],
+```
