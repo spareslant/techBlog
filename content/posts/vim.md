@@ -10,7 +10,7 @@ tags: ["vim"]
 * `*` => search whole word under the cursor in file. `#` => search backwards
 * `H M L`  => (50% screen scroll) High, Medium, Low cusror postion in current viewport of screen
 * `ctrl+d` => 25% screen scroll along with cursor. `ctrl+u` => reverse
-* `ctrl+f` => full screen scroll along with cursir. `ctrl+b` => reverse
+* `ctrl+f` => full screen scroll along with cursor. `ctrl+b` => reverse
 * `g_` => move cursor to the end of line till first non-blank character.
 * `gE` => move cursor to the end of previous word. special chars are not treated special.
 * `50gg` => moves cursor to line 50 in normal mode.
@@ -129,3 +129,77 @@ tags: ["vim"]
    }
 ],
 ```
+## Window operations
+* `ctrl+w =` => resizes all windows equally
+* `ctrl+w p` => move back to previous window
+* `ctrl+w <HJKL>` => move windows
+* https://vimhelp.org/windows.txt.html#window-resize
+
+## VIM IDE
+* start vim
+* Open dir browser on left =>  `:Lexplore`
+* resize dir browser => `:vertical resize 30` or `ctrl+w [-+]`
+* open new file in new split window when `Enter` is pressed on a file in dir window => `:let g:netrw_browse_split = 2`
+* switch to new window => `ctrl+w w`
+* create a new file in vertical split => `:vs afile.txt`
+* open terminal => `:term`
+* Bring terminal down => `ctrl+w J`
+   * Enter terminal Normal mode => `ctrl+w N`
+   * to adjust height of terminal => `ctrl+w :resize 40`
+   * `ctrl+w |` => maximizes width of window
+   * `ctrl+w =` => restores all window sizes to equal proportions.
+
+https://vimhelp.org/pi_netrw.txt.html
+https://vimhelp.org/windows.txt.html#window-resize
+https://vimhelp.org/terminal.txt.html
+
+## set filetype
+* :set ft=sh  => sets filetype to a shell script
+
+## To delete all lines from a file matching a pattern
+* `:g/profile/d`
+* `:g!/profile/d` => reverse of above command.
+
+## get a range of lines (6-8) from another file
+* `:read ! perl -wnl -e 'if ($. >= 6 &&  $. <= 8) {print}' second.rs`
+
+## repeat a word multiple times
+* `<esc>20iyahoo<esc>`
+
+## egrep and egrep -v
+* `:g/found/v/notfound/{cmd}`
+
+## operation on first occurence of match
+* `:g/yahoo/.norm nwi_zzz` => append _zzz at the `end of every word` containing yahoo (just first occurence)
+
+* `:g/yahoo/.norm 10nwi_zzz` => repeat nwi_zzz 10 times on a line. 
+
+## operation on all occurence of match
+* `:%s/yahoo/&_zzz/g` => append _zzz at the `end of every matching word` containing yahoo
+
+## operations on all the lines matching a pattern
+* `:g/yahoo/t21`  => copy all lines matching yahoo to line 21 onwards
+* `:g/yahoo/m21`  => move all lines matching yahoo to line 21 onwards
+
+## insert repeated chars
+* `30i*<esc>` => inserts 30 * chars
+* `30i<space><esc>` => inserts 30 spaces
+* `:normal 50iabc <ctrl-v><esc>` => inserts `abc ` 50 times. After abc<space> press ctrl-v and then escacpe to insert escape. 
+
+## ex-command index
+* http://vimdoc.sourceforge.net/htmldoc/vimindex.html#ex-cmd-index
+
+## search and editing
+* http://vimdoc.sourceforge.net/htmldoc/usr_10.html#10.4
+
+## Search and perform an operation on all searches
+* `/yahoo`  => search for something first
+* `qqq` => clear q register. 1st q --> starts recording, 2nd q --> name of the reg ro record into, 3rd q ---> stop recording. Now `q` register is empty. we could have used `qaq` as well, in this case register is `a`
+* `qq` => start recording actions in q register. Now type `eai_zzz<esc>n`. This is going to append _zzz to the end word containing the string `yahoo`. type q again to stop recording. <esc> can be entered by pressing ctrl-v + <esc>
+* now press @q to run the macro on next search. Keep in repeating @q in order to apply macro on next search. After pressing @q first time, you can repeat @q by using @@.
+* NOTE: you do not need to press `n` to move to next search. However you can press n to skip search. 
+
+## put quotes around a word using macro
+* `qqq` => clear q register
+* go to a word by pressing w. Now press `qq` to start recording macro. Now type `ebi"<esc>ea"<esc>`. This will insert quotes around a word. now press q to stop recording macro
+* now go to any word which you want to surround with quotes and press @q. To perform the same action on another word you can keep on typing @@.
