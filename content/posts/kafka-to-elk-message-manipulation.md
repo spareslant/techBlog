@@ -1,7 +1,7 @@
 ---
 title: "Kafka to Elk Message Manipulation"
 date: 2020-05-21T05:58:11+01:00
-draft: true
+draft: false
 tags: ["docker", "kafka", "elasticSearch", "kibana", "logstash", "ELK", "ruby"]
 ---
 
