@@ -84,6 +84,9 @@ tags: ["vim"]
 * `:.m-3` => moves current line 2 lines above.
 * `:5,7m 21` => moves line 5-7 after line 21
 
+## Copy line
+* `:21t-1` => copies line at line-no:21 and paste it in current position.
+
 ## command-mode commands
 * `:reg` => list registers and its contents
 * `:jumps` => list all jumps. (`ctrl+]` and `ctrl+o`)
@@ -180,6 +183,9 @@ https://vimhelp.org/terminal.txt.html
 ## operations on all the lines matching a pattern
 * `:g/yahoo/t21`  => copy all lines matching yahoo to line 21 onwards
 * `:g/yahoo/m21`  => move all lines matching yahoo to line 21 onwards
+
+## operations on a range of lines matching a pattern
+* `:186,209g/^set statusline/.norm 0i`
 
 ## insert repeated chars
 * `30i*<esc>` => inserts 30 * chars
