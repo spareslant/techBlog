@@ -45,6 +45,8 @@ tags: ["vim"]
 * :help c_^N  => command-mode ctrl-n help
 * :help :g => command-mode g help
 * :help g => normal-mode g help
+* :help map-modes => all modes
+* :help :, => command mode , help
 
 ## repeat actions from register in insert mode.
 * in NORMAL mode, press`q`<a char> e.g. qw to start recording actions in `w` register. When finish come to normal mode and press `q` again to register all the actions in `w` register. In order to repeat the actions in saved in `w` register, following are the two methods.
@@ -84,6 +86,10 @@ tags: ["vim"]
 * `:.m-3` => moves current line 2 lines above.
 * `:5,7m 21` => moves line 5-7 after line 21
 
+## reduce multiple blank lines to one blank lime
+* `:38,$s!\n\+!^M^M!g`  => ^M can be entered by <ctrl-v><ctrl-enter>
+* `:38,$s/\n\+/\r\r/g` => same as above
+
 ## Copy line
 * `:21t-1` => copies line at line-no:21 and paste it in current position.
 
@@ -101,6 +107,15 @@ tags: ["vim"]
 * `crtl+t` => insert indent in insert mode
 * `crtl+d` => delete indent in insert mode
 
+## indent a code
+* `=i{` => indent a code inside {} pair excluding '{' and '}' characters.
+* `=a{` => indent a code inside {} pair including '{' and '}' characters.
+* `:38,$g/oo/>` => indent all those lines in line range from 38 till end, that matches a pattern "oo"
+* `:38,$g/oo/>>>>` => indent 4 times all those lines in line range from 38 till end, that matches a pattern "oo" 
+* `vjj=` => re-indent in visual style
+* `5,10 norm ==` => re-indent using ex-command mode.
+* `:s/\s\+//g | norm ==` => remove white-space between words and reindent it
+
 ## line search repeat
 * `fx` => searches for char `x` in line
 * `;` => repeat the above search and `,` searches backwards
@@ -113,7 +128,7 @@ tags: ["vim"]
 
 ## Join range of lines 
 * `3J` => join three lines
-* `4,5j` => join lines from 4 to 5
+* `:4,5j` => join lines from 4 to 5
 
 ## Vim Dir explorer
 * open vim and run `:Lexplore`, then `:vertical resize 40`
@@ -127,7 +142,7 @@ tags: ["vim"]
 ```
 "vim.insertModeKeyBindingNonRecursive" : [
    {
-      "before": ["§"],
+      "before": ["j", "k"],
       "after": ["<ESC>"]
    }
 ],
@@ -185,12 +200,19 @@ https://vimhelp.org/terminal.txt.html
 * `:g/yahoo/m21`  => move all lines matching yahoo to line 21 onwards
 
 ## operations on a range of lines matching a pattern
-* `:186,209g/^set statusline/.norm 0i`
+* `:186,209g/^set statusline/.norm 0iyahoo`
+* `:12,17g/omitempty/m8` => In line range 12,17 move all lines having omitempty to line 8
+* `38,46g/oo/ s/some/SOME/g` => in the line range 38,46 find all lines with "oo" pattern and replace some with SOME in those found lines.
+* `:38,$  w /tmp/yahoo` => copy a range of lines to a file (creates the file if doesn't exis)
+* `:38,$g/oo/  . w! >> /tmp/yahoo` => copy lines to file /tmp/yahoo in line range from 38 till end of file which has matched pattern of "oo"
+* `/pattern1/,/pattern2/ {ex-cmd}` => operation on the range of lines.
+* `:38,$g/./s/^/#/g` => from line 38 till end, comment all lines but do not comment empty line.
+* `:10,16g/omit/ | s/json/JSON/` 
 
 ## insert repeated chars
 * `30i*<esc>` => inserts 30 * chars
 * `30i<space><esc>` => inserts 30 spaces
-* `:normal 50iabc <ctrl-v><esc>` => inserts `abc ` 50 times. After abc<space> press ctrl-v and then escacpe to insert escape. 
+* `:normal! 50iabc <ctrl-v><esc>` => inserts `abc ` 50 times. After abc<space> press ctrl-v and then escacpe to insert escape. 
 
 ## ex-command index
 * http://vimdoc.sourceforge.net/htmldoc/vimindex.html#ex-cmd-index
