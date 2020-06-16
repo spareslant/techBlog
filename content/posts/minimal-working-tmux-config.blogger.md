@@ -38,11 +38,11 @@ setw -g window-status-current-format "#I.#P#F #W"
 setw -g window-status-current-style fg=colour7,bold,bg=colour22
 setw -g window-status-last-style fg=colour7,bold,bg=colour23
 setw -g window-status-style fg=colour11,bold,bg=colour52
-setw -g window-status-separator "<->"
+setw -g window-status-separator "   "
 
 # setw -g pane-border-style fg=red,bg=black
 setw -g pane-border-status top
-setw -g pane-border-format "#[bold]#I.#P#F"
+setw -g pane-border-format "#[bold]#I.#P#F #[bold]#T"
 
 set -g allow-rename off
 set -g mode-keys vi
@@ -54,5 +54,4 @@ set-option -g mouse on
 tmux -u
 ```
 **Note:** `-u` is specified for terminals where locale is not set to `UTF-8`
-
-
+**Note** To change the title of pane run this command `ctrl-b :select-pane -T MyTitle`
