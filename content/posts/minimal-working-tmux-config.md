@@ -11,19 +11,50 @@ Populate `$HOME/.tmux.conf` with following contents
 set -g default-terminal "screen-256color"
 set -g history-limit 99999
 # setw -g status-utf8 on
-set -g status-bg colour16
+
+# status line background colour will be the colour of terminal in background
+set -g status-bg default
 setw -g display-time 5000
-setw -g window-status-format "#I.#P #W"
-setw -g window-status-current-format "#I.#P#F #W"
-setw -g window-status-current-style fg=colour7,bold,bg=colour22
-setw -g window-status-last-style fg=colour7,bold,bg=colour23
-setw -g window-status-style fg=colour11,bold,bg=colour52
+
+####################################################################################################
+#      settings for TMUX widnows status decorations                                                #
+####################################################################################################
+# status format for both last-active-window and all the windows before last-active
+# commas are escaped using # char in below statement. i.e #, => escapes comma. Below 5 lines are actually one line broke up into 5
+setw -g window-status-format "#{\
+?window_last_flag,\
+#[bold #, bg=colour226 #, fg=colour232] #I.#P #W ,\
+#[bold #, bg=colour124 #, fg=colour232] #I.#P #W \
+}"
+
+# status format for current active window
+setw -g window-status-current-format "#[bold #, bg=colour77 #, fg=colour232] #I.#P#F #W "
 setw -g window-status-separator "   "
 
-# setw -g pane-border-style fg=red,bg=black
+####################################################################################################
+#      settings for TMUX pane status decorations                                                   #
+####################################################################################################
 setw -g pane-border-status top
-setw -g pane-border-format "#[bold]#I.#P#F #[bold]#T"
 
+# we do not need bg colour here as we want the bg colour to be the colour of the terminal, therefore bg is set to default. We may even omit bg here.
+# set the colouring of border for current active pane
+setw -g pane-active-border-style bg=default,fg=colour81
+
+# we cannot have space after the comma here.
+# set the colouring of border for non-current pane
+setw -g pane-border-style bg=default,fg=colour180
+
+# commas are escaped using # char in below statement. i.e #, => escapes , . Below 5 lines are actually one line broke up into 5
+# two different colour schemes for current and all non-current panes TEXT
+setw -g pane-border-format "#{\
+?pane_active,\
+#[bold #, bg=colour81 #, fg=colour16]  ~>> #I.#P   #T <<~  ,\
+#[bg=colour180 #, fg=colour16] #I.#P #T \
+}"
+
+####################################################################################################
+#      Other settings                                                                              #
+####################################################################################################
 set -g allow-rename off
 set -g mode-keys vi
 set-option -g mouse on

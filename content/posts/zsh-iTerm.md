@@ -24,4 +24,4 @@ bindkey -v
 Ref: https://www.freecodecamp.org/news/jazz-up-your-zsh-terminal-in-seven-steps-a-visual-guide-e81a8fd59a38/
 * `Text->Font=Monaco->Size=14`
 * `Window`->`Style=Maximized`->`space=All Spaces`
-
+* For mouse to work in Tmux: `Preferences`->`Advanced`->search for tmux-> Double-report scroll wheel events to work around tmux scrolling bug -> `yes`
