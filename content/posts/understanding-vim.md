@@ -100,7 +100,7 @@ tags: ["vim"]
 * `:@:` => Repeat last command run in command-mode
 
 ## marks
-* `ma` => created a mark named `a` at a given line
+* `ma` => created a mark named `a` at a given line 
 * <`a> => move back to the marked position.
 
 ## tabs in insert mode
@@ -166,6 +166,7 @@ tags: ["vim"]
    * to adjust height of terminal => `ctrl+w :resize 40`
    * `ctrl+w |` => maximizes width of window
    * `ctrl+w =` => restores all window sizes to equal proportions.
+* `ctrl+w q`  => closes window
 
 https://vimhelp.org/pi_netrw.txt.html
 https://vimhelp.org/windows.txt.html#window-resize
@@ -231,3 +232,18 @@ https://vimhelp.org/terminal.txt.html
 * `qqq` => clear q register
 * go to a word by pressing w. Now press `qq` to start recording macro. Now type `ebi"<esc>ea"<esc>`. This will insert quotes around a word. now press q to stop recording macro
 * now go to any word which you want to surround with quotes and press @q. To perform the same action on another word you can keep on typing @@.
+
+## put quotes around a word using visual selection
+* `qqq` => clear q register
+* go to a word by pressing w. press `v` to start character visual mode.
+* keep on pressing `w` to keep on selecting words. or `l` to select character-wise. you can use arrows keys as well.
+* once you have selected the text. press `qq` to start recording in `q` register.
+* press <esc>
+* press `> to go the end of selection. press `a` to go in insert mode. insert double quote i.e "
+* press <esc>
+* press `< to go to start of selection. press `i` to go in insert mode. insert double quote i.e "
+* press <esc>
+* press `> to go back to the end of selection. press `ll` to move cursor to the end of selection. 
+* press `q`again to stop recording.
+
+* now go to any other position in file. visually select the text. press <esc> and then `@q` to apply quotes to selected text.
