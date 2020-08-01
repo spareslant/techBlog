@@ -247,3 +247,126 @@ https://vimhelp.org/terminal.txt.html
 * press `q`again to stop recording.
 
 * now go to any other position in file. visually select the text. press <esc> and then `@q` to apply quotes to selected text.
+
+## Register operations:
+* in normal-mode: `"ayy` => copies current line in register `a`
+* in normal-mode: `"ap`  => paste the contents of register `a` below the current line
+* in insert-mode: `ctrl+r a` => paste the contents of register in current position.
+* `"` is the default register.
+* `:` is register which stores commands entered in ex-command mode.
+* in normal-mode: `@a` => will execute the contents of register.
+* in normal-mode: `@:` => will execute the contents of register `:`, hence commands entered in command-mode will be executed.(last ex-command)
+
+## repeat register operations
+* start recording a macro in normal mode.
+  * `qaq` => clears register `a`
+  * `qa`  => starts recording key-strokes in register `a`
+  * `d/:` => deletes till `:` found in line of text.
+  * `q`   => stops recording.
+* go to ex-command mode:
+  * `:.,+5 normal @a` => delete text till `:` found in all lines starting from current and till next 5 lines.
+
+## How to cut the content in json:
+Following is the json
+```
+"devDependencies": {
+    "@types/diff": "4.0.2",
+    "@types/diff-match-patch": "1.0.32",
+    "@types/glob": "7.1.3",
+    "@types/lodash": "4.14.157",
+    "@types/mocha": "8.0.0",
+    "@types/node": "12.12.31",
+    "@types/sinon": "9.0.4",
+    "@types/vscode": "1.37.0",
+    "clean-webpack-plugin": "3.0.0",
+}
+```
+we want to cut the column before `:` and paste is somewhere else.
+* we will be using two registers here (namely `a` and `b`). One (`a`) will record the actions and other (`b`) will record the cut content.
+* `qaq` and `qbq` => clear the contents of register `a` and `b`
+* place the cursor on line 2.
+* `qa` => start recording the action.
+* make movement adjustment first before cutting/yanking the content. i.e press `^` to bring cursor where the line starts.
+* now press `"B` to keep the record of cut contents. Please note that we are using `B` (capital B) here. Capital named register allows to append into existing register `b`. If we use `"b`, then on next cut, contents of `b` will be lost. Please also note that contents will eventually go into `b` register if you use either `"B` abd `"b`. Using `B` just indicates that we do not want the contents in register `b` to be overwritten.
+* now press `d/:<enter>` => This will delete the content till `:` found in the line of text. As we have specified `"B` in previous step, these contents will go in `b` register and append mode.
+* press `q` to stop recording actions in register `a`
+* go to ex-command-mode and run following
+* `:.+1,+5 normal @a` => This will apply the actions from current line and next 5 lines and append the deleted content in register `b`.
+* `:reg` => to check the content of all registers
+
+* contents will now look like this now.
+```
+"devDependencies": {
+    : "4.0.2",
+    : "1.0.32",
+    : "7.1.3",
+    : "4.14.157",
+    : "8.0.0",
+    : "12.12.31",
+    "@types/sinon": "9.0.4",
+    "@types/vscode": "1.37.0",
+    "clean-webpack-plugin": "3.0.0",
+}
+```
+
+* Now go to the line where you want to paste the cut content.
+* press `"bp` or `ctrl+r b`. I moved to the last line and now contents look like this.
+```
+"devDependencies": {
+    : "4.0.2",
+    : "1.0.32",
+    : "7.1.3",
+    : "4.14.157",
+    : "8.0.0",
+    : "12.12.31",
+    "@types/sinon": "9.0.4",
+    "@types/vscode": "1.37.0",
+    "clean-webpack-plugin": "3.0.0",
+}
+"@types/diff""@types/diff-match-patch""@types/glob""@types/lodash""@types/mocha""@types/node"
+``` 
+* In order to put above one line content in different lines, run following command in ex-command mode. Make sure your cursor is on that line.
+* `:. ! perl -wpl -e 's/(".+?")/$1\n/g' `
+* now contents will look like this.
+```
+"devDependencies": {
+    : "4.0.2",
+    : "1.0.32",
+    : "7.1.3",
+    : "4.14.157",
+    : "8.0.0",
+    : "12.12.31",
+    "@types/sinon": "9.0.4",
+    "@types/vscode": "1.37.0",
+    "clean-webpack-plugin": "3.0.0",
+}
+"@types/diff"
+"@types/diff-match-patch"
+"@types/glob"
+"@types/lodash"
+"@types/mocha"
+"@types/node"
+```
+* Now if you wish you can put back this block back to its original position.
+* `:set virtualedit=all`
+* `ctrl-v ` and select the whole block and press `y` to copy or `d` to delete. I pressed `y`.
+* Place the cursor at line 2 before `:` and press `p`. Contents will look like this now.
+```
+"devDependencies": {
+    "@types/diff"            : "4.0.2",
+    "@types/diff-match-patch": "1.0.32",
+    "@types/glob"            : "7.1.3",
+    "@types/lodash"          : "4.14.157",
+    "@types/mocha"           : "8.0.0",
+    "@types/node"            : "12.12.31",
+    "@types/sinon": "9.0.4",
+    "@types/vscode": "1.37.0",
+    "clean-webpack-plugin": "3.0.0",
+}
+"@types/diff"
+"@types/diff-match-patch"
+"@types/glob"
+"@types/lodash"
+"@types/mocha"
+"@types/node"
+```
