@@ -67,7 +67,7 @@ tags: ["javascript"]
 * if `instanceof` is used with a `primitive value`, it will always return `false`, because primitives aren’t objects.
 * The `typeof` operator also returns `function` when used on a function.
 * The `for-in` statement is a strict iterative statement. It is used to enumerate the non-symbol keyed properties of an `object`.
-* The `for-of` statement is a strict iterative statement. It is used to loop through elements in an iterable `object`
+* The `for-of` statement is a strict iterative statement. It is used to loop through elements in an iterable `object:w`
 * Built-in reference types
   * `Object`
   * `Array`

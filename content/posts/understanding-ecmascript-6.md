@@ -107,3 +107,23 @@ Above function might be called like this:
 
 button.onlick(eobject);
 ```
+
+## Promises
+* A promise takes a function as its parameter. This function is called `executor`. This executor function further takes two parameters (provided by the compiler). This params are genereally written as `resolve` and `reject`.
+```
+const p = new Promise(function(reslove, reject) {
+  AnAsyncFunction((err, value) => {
+    if err reject(err)
+    else resolve(value)
+  })
+})
+``` 
+```
+const p = new Promise((resolve, reject) => {
+  AnAsyncFunction((err, value) => {
+    if err reject(err)
+    else resolve(value)
+  })
+})
+```
+* `await` is applicable to promise not function.
