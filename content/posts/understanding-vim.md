@@ -47,6 +47,7 @@ tags: ["vim"]
 * :help g => normal-mode g help
 * :help map-modes => all modes
 * :help :, => command mode , help
+* :help ^W => help for windows,tab, switching between tabs and windows
 
 ## repeat actions from register in insert mode.
 * in NORMAL mode, press`q`<a char> e.g. qw to start recording actions in `w` register. When finish come to normal mode and press `q` again to register all the actions in `w` register. In order to repeat the actions in saved in `w` register, following are the two methods.
@@ -167,6 +168,9 @@ tags: ["vim"]
    * `ctrl+w |` => maximizes width of window
    * `ctrl+w =` => restores all window sizes to equal proportions.
 * `ctrl+w q`  => closes window
+* `ctrl+w _` => make current window height to max
+* `ctrl+w |` => make currrent window width to max
+* `ctrl+w =` => make all windows of equal size.
 
 https://vimhelp.org/pi_netrw.txt.html
 https://vimhelp.org/windows.txt.html#window-resize
@@ -227,6 +231,18 @@ https://vimhelp.org/terminal.txt.html
 * `qq` => start recording actions in q register. Now type `eai_zzz<esc>n`. This is going to append _zzz to the end word containing the string `yahoo`. type q again to stop recording. <esc> can be entered by pressing ctrl-v + <esc>
 * now press @q to run the macro on next search. Keep in repeating @q in order to apply macro on next search. After pressing @q first time, you can repeat @q by using @@.
 * NOTE: you do not need to press `n` to move to next search. However you can press n to skip search. 
+
+## Search and replace a whole word in Normal mode
+* use `*` or `g*` to take current cursor word in search register. `*` => matches only whole word. `g*` matches word in any pattern.
+* pressing `*` or `g*` moves you to the next match. To go back to previous location press `#` or `g#`.
+* once back in original position. use `cw` to change the word. press <ESC> and press `n` to search for next match and then press `.` (dot). keep on pressing `n` followed by `.`(dot) to replace all the occurrences.
+
+## Search and replace any pattern in visual/normal mode
+* search the word first using `/wordtosearch`
+* press `n` and go to that word or `N` to go backward.
+* press `v` to go in visual mode and select pattern using motion keys like `l,h,w,b` etc.
+* now press `cw` to replace the word and press <ESC>
+* press `n` to go to next word and press `.` (dot) and replace the word
 
 ## put quotes around a word using macro
 * `qqq` => clear q register
