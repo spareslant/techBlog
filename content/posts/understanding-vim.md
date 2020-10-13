@@ -16,6 +16,12 @@ tags: ["vim"]
 * `50gg` => moves cursor to line 50 in normal mode.
 * `:50` => moves cursor to line 50 in command mode
 * `zz` => center the screen
+* To move paragraphs => { and } or `{ and `}
+* To move to start of end of highlisted text (in visual mode): `< and `>
+* To move to a marked postion: `<marked char> (to mark: m<aChar>).
+* To move between the changes done in file: `g;` and `g,`
+* To move between the jumps done in file: `ctrl+o` and `ctrl+i`
+* To move the cursor to its last postion when file was closed: `"
 
 ## change
 * in vim type `:h word-motions`
@@ -69,6 +75,11 @@ tags: ["vim"]
 
 ## Filters
 * `:1,$ ! perl -wpl -e 's/Content/CONTENT/g'`
+
+## launch vim with terminal
+* run command => `vim +term`. This opens two horizontally stacked windows with terminal opened in upper window.
+* `ctrl+w w` => swith to other unwanted window
+* `ctrl+w q` => close this unwanted window
 
 ## system clipboard in normal mode
 * `"*yy` => copies text in `*` register. now you can use system ctrl+v to paste outside vim.
@@ -225,6 +236,20 @@ https://vimhelp.org/terminal.txt.html
 ## search and editing
 * http://vimdoc.sourceforge.net/htmldoc/usr_10.html#10.4
 
+* Remove trailing white spaces for lines
+* `:59,60s/\s\+$//gc`
+
+* create folds
+* `zf{motion}` => `zf}` => creates fold of a paragraph
+* `8zf` => creates fold of 8 lines
+* `:3,52fold` => creates fold from lines 3 till 52
+* `za` => toggles open and close folds
+* `zE` => eleminiate all folds
+* `zO` => open all folds
+
+* spell suggesstion
+* `z=`
+
 ## Search and perform an operation on all searches
 * `/yahoo`  => search for something first
 * `qqq` => clear q register. 1st q --> starts recording, 2nd q --> name of the reg ro record into, 3rd q ---> stop recording. Now `q` register is empty. we could have used `qaq` as well, in this case register is `a`
@@ -241,7 +266,7 @@ https://vimhelp.org/terminal.txt.html
 * search the word first using `/wordtosearch`
 * press `n` and go to that word or `N` to go backward.
 * press `v` to go in visual mode and select pattern using motion keys like `l,h,w,b` etc.
-* now press `cw` to replace the word and press <ESC>
+* now press `c` to replace the word and press <ESC>
 * press `n` to go to next word and press `.` (dot) and replace the word
 
 ## put quotes around a word using macro
@@ -343,6 +368,7 @@ we want to cut the column before `:` and paste is somewhere else.
 ``` 
 * In order to put above one line content in different lines, run following command in ex-command mode. Make sure your cursor is on that line.
 * `:. ! perl -wpl -e 's/(".+?")/$1\n/g' `
+* or run this command => `:s/""/"<ctrl+v><ctrl+ENTER>"/g`
 * now contents will look like this.
 ```
 "devDependencies": {
