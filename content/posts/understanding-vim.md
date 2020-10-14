@@ -311,6 +311,11 @@ https://vimhelp.org/terminal.txt.html
 * switch to some.py window and run python script again with output going to /tmp/output-1 => `:e! /tmp/output-1 | r! python3 #` => This replaces current some.py window with lastest output
 * bring back some.py => `b! #`
 
+* following can also be used and should be much simpler
+* `:vsplit  /tmp/some-new | r! python3 -m json.tool #` => opens /tmp/some-new in new vertical window. You can keep on repeating above command. and it will open a new window every time. You can close the previous window by switching to it using `ctrl+w w` and then `:hide`
+* you can list all buffers with `:ls`
+* you can open a buffer in current window using `:b! <number>`
+
 ## Register operations:
 * in normal-mode: `"ayy` => copies current line in register `a`
 * in normal-mode: `"ap`  => paste the contents of register `a` below the current line
