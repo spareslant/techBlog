@@ -315,6 +315,7 @@ https://vimhelp.org/terminal.txt.html
 * `:vsplit  /tmp/some-new | r! python3 -m json.tool #` => opens /tmp/some-new in new vertical window. You can keep on repeating above command. and it will open a new window every time. You can close the previous window by switching to it using `ctrl+w w` and then `:hide`
 * you can list all buffers with `:ls`
 * you can open a buffer in current window using `:b! <number>`
+* you can split window on either right or left using `:set splitright!` or `:set splitright`
 
 ## Register operations:
 * in normal-mode: `"ayy` => copies current line in register `a`
