@@ -72,6 +72,7 @@ tags: ["vim"]
 ## buffers
 * `:ls` => list current buffers
 * `:b <buffer number>` => jump to that buffer (file)
+* `:edit /tmp/yahoo | r! ls -l `
 
 ## Filters
 * `:1,$ ! perl -wpl -e 's/Content/CONTENT/g'`
@@ -288,6 +289,27 @@ https://vimhelp.org/terminal.txt.html
 * press `q`again to stop recording.
 
 * now go to any other position in file. visually select the text. press <esc> and then `@q` to apply quotes to selected text.
+
+## split all lines of an english paragraph in its own lines separately
+* `:s/\./\.<ctrl+v><ctrl+ENTER>/gc` 
+
+## split a line in its individual words on its own separate lines
+* `s/\(\w\+\)/\1<ctrl+v><ctrl+ENTER>/gc`
+
+## VIM shell compile/run edit cycle
+* open file => `vim some.py`
+* run the python script => `:e! /tmp/output-1 | r! python3 #` => This command will print output/error into a new buffer (file) called /tmp/yahoo and swicthes to that buffer.
+* open python buffer in separate window => `vertical sb #` => without vertical keyword it will split horizontally.
+* to list buffers => `:ls`
+* to switch buffer in current active window => `b! <number>`
+* run python script again with output in different buffer => `e! /tmp/output-2 | r! python3 #` => This makes /tmp/outout-2 buffer to replace some.py window
+* Bring back some.py in current window: `b! #`
+* To hide a buffer => `:hide`
+* To delete a buffer => `:ls` and then `:bd! <number>`
+* Go to other window => `ctrl+w w`
+* open /tmp/output-2 buffer horizontally in this window => `:sb 3`
+* switch to some.py window and run python script again with output going to /tmp/output-1 => `:e! /tmp/output-1 | r! python3 #` => This replaces current some.py window with lastest output
+* bring back some.py => `b! #`
 
 ## Register operations:
 * in normal-mode: `"ayy` => copies current line in register `a`
