@@ -183,6 +183,9 @@ tags: ["vim"]
 * `ctrl+w _` => make current window height to max
 * `ctrl+w |` => make currrent window width to max
 * `ctrl+w =` => make all windows of equal size.
+* `ctrl+w [+-]` => window resize vertically
+* `ctrl+w [<>]` => window resize horizontally.
+* Go to explorer winow using `ctrl+w w` and press `i` to change view. Keep on pressing i to see different viees.
 
 https://vimhelp.org/pi_netrw.txt.html
 https://vimhelp.org/windows.txt.html#window-resize
