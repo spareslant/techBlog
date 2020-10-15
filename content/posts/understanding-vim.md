@@ -189,6 +189,7 @@ tags: ["vim"]
 * `set splitbelow` to open new window below the current
 * `set splitrigt` to open new window on the right of the current window.
 * change file(buffer) in current window => `b! <buffer number>`
+* `:only` => close all other buffers and open only the current one
 
 https://vimhelp.org/pi_netrw.txt.html
 https://vimhelp.org/windows.txt.html#window-resize
