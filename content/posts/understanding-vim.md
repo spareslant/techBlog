@@ -15,7 +15,9 @@ tags: ["vim"]
 * `gE` => move cursor to the end of previous word. special chars are not treated special.
 * `50gg` => moves cursor to line 50 in normal mode.
 * `:50` => moves cursor to line 50 in command mode
-* `zz` => center the screen
+* `zz` => center the window with cursor on text
+* `zt` => top of the window with cursor on text
+* `zb` => bottom  of the window with cursor on text
 * To move paragraphs => { and } or `{ and `}
 * To move to start of end of highlisted text (in visual mode): `< and `>
 * To move to a marked postion: `<marked char> (to mark: m<aChar>).
@@ -180,11 +182,12 @@ tags: ["vim"]
    * `ctrl+w |` => maximizes width of window
    * `ctrl+w =` => restores all window sizes to equal proportions.
 * `ctrl+w q`  => closes window
-* `ctrl+w _` => make current window height to max
-* `ctrl+w |` => make currrent window width to max
-* `ctrl+w =` => make all windows of equal size.
-* `ctrl+w [+-]` => window resize vertically
-* `ctrl+w [<>]` => window resize horizontally.
+* `<num>ctrl+w _` => make current window height to max
+* `<num>ctrl+w |` => make currrent window width to max
+* `<num>ctrl+w =` => make all windows of equal size.
+* `<num>ctrl+w [+-]` => window resize vertically
+* `<num>ctrl+w [<>]` => window resize horizontally.
+* `z<number><Enter> => resizes current window vertically as per <number>`
 * Go to explorer winow using `ctrl+w w` and press `i` to change view. Keep on pressing i to see different viees.
 * `set splitbelow` to open new window below the current
 * `set splitrigt` to open new window on the right of the current window.
