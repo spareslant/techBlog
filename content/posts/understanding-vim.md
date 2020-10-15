@@ -186,6 +186,9 @@ tags: ["vim"]
 * `ctrl+w [+-]` => window resize vertically
 * `ctrl+w [<>]` => window resize horizontally.
 * Go to explorer winow using `ctrl+w w` and press `i` to change view. Keep on pressing i to see different viees.
+* `set splitbelow` to open new window below the current
+* `set splitrigt` to open new window on the right of the current window.
+* change file(buffer) in current window => `b! <buffer number>`
 
 https://vimhelp.org/pi_netrw.txt.html
 https://vimhelp.org/windows.txt.html#window-resize
