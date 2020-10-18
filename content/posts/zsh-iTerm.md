@@ -25,3 +25,6 @@ Ref: https://www.freecodecamp.org/news/jazz-up-your-zsh-terminal-in-seven-steps-
 * `Text->Font=Monaco->Size=14`
 * `Window`->`Style=Maximized`->`space=All Spaces`
 * For mouse to work in Tmux: `Preferences`->`Advanced`->search for tmux-> Double-report scroll wheel events to work around tmux scrolling bug -> `yes`
+* If powerline-fonts are installed and is being used, then set the fonts to `Inconsolata-dz for powerline` so that `fancy icons` can be displayed properly in the vim status-line or zsh prompt
+
+
