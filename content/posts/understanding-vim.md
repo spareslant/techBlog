@@ -56,6 +56,7 @@ tags: ["vim"]
 * :help map-modes => all modes
 * :help :, => command mode , help
 * :help ^W => help for windows,tab, switching between tabs and windows
+* :help key-codes => list of key-codes for special keys like <ESC>, <Up> etc
 
 ## repeat actions from register in insert mode.
 * in NORMAL mode, press`q`<a char> e.g. qw to start recording actions in `w` register. When finish come to normal mode and press `q` again to register all the actions in `w` register. In order to repeat the actions in saved in `w` register, following are the two methods.
@@ -167,6 +168,8 @@ tags: ["vim"]
 * `ctrl+w p` => move back to previous window
 * `ctrl+w <HJKL>` => move windows
 * https://vimhelp.org/windows.txt.html#window-resize
+* To change width => `ctrl+w 5<` or `ctrl+w 6>`
+* To change height => `ctrl+w 5+` or `ctrl+w 6-`
 
 ## VIM IDE
 * start vim
@@ -241,6 +244,9 @@ https://vimhelp.org/terminal.txt.html
 * `30i<space><esc>` => inserts 30 spaces
 * `:normal! 50iabc <ctrl-v><esc>` => inserts `abc ` 50 times. After abc<space> press ctrl-v and then escacpe to insert escape. 
 
+## Highlight all the trailing whitespaces
+* /\s\+$<Enter>
+
 ## ex-command index
 * http://vimdoc.sourceforge.net/htmldoc/vimindex.html#ex-cmd-index
 
@@ -279,6 +285,13 @@ https://vimhelp.org/terminal.txt.html
 * press `v` to go in visual mode and select pattern using motion keys like `l,h,w,b` etc.
 * now press `c` to replace the word and press <ESC>
 * press `n` to go to next word and press `.` (dot) and replace the word
+
+## Search and replace in visual mode
+* select the block of text with `ctrl+v`
+* press <ESC>
+* `:%s/\%Vpattern/replacedPatterm/g`
+* Above will replace only in visually selected area.
+* after pressing <ESC>, do this to search in visually selected area `/\%Vpattern`
 
 ## put quotes around a word using macro
 * `qqq` => clear q register
@@ -450,3 +463,10 @@ we want to cut the column before `:` and paste is somewhere else.
 "@types/mocha"
 "@types/node"
 ```
+## FZF flow
+* To List all files in current directory
+* `Files`  `Files!` (Full screen, use shit-arrows to scroll in preview windows)
+* To list git modified files
+* `GFiles?` `GFiles!?` (Full screen mode.)
+* Git status
+* `Gstatus` 
