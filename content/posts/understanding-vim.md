@@ -469,4 +469,13 @@ we want to cut the column before `:` and paste is somewhere else.
 * To list git modified files
 * `GFiles?` `GFiles!?` (Full screen mode.)
 * Git status
-* `Gstatus` 
+* `Gstatus`
+
+## Search and replace interactively in multiple files
+* make sure fzf.vim and ripgrep is installed.
+* Search for pattern and select all matched file in `quickfix` list.
+* `:Rg pattern`  => now select all files and press <Enter>. A quickfix window will open listing all the files
+* now run following command to replace the pattern
+* `:cfdo %s/pattern/NEW_PATTERN/gc | update`
+* you can view `quickfix` list manually as well via `clist` or `copen` command.
+* use `cnext` => to move to next file in quickfix window
