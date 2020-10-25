@@ -172,6 +172,7 @@ tags: ["vim"]
 * To change height => `ctrl+w 5+` or `ctrl+w 6-`
 * `ctrl+w s` => horizontal split
 * `ctrl+w v` => vertical split
+* `ctrl+w T` => move current window to new tab
 
 ## VIM IDE
 * start vim
