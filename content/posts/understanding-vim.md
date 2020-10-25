@@ -170,6 +170,8 @@ tags: ["vim"]
 * https://vimhelp.org/windows.txt.html#window-resize
 * To change width => `ctrl+w 5<` or `ctrl+w 6>`
 * To change height => `ctrl+w 5+` or `ctrl+w 6-`
+* `ctrl+w s` => horizontal split
+* `ctrl+w v` => vertical split
 
 ## VIM IDE
 * start vim
