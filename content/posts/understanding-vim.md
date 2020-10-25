@@ -479,3 +479,11 @@ we want to cut the column before `:` and paste is somewhere else.
 * `:cfdo %s/pattern/NEW_PATTERN/gc | update`
 * you can view `quickfix` list manually as well via `clist` or `copen` command.
 * use `cnext` => to move to next file in quickfix window
+
+## Save a VIM session
+* `:mksession saved_session.vim`
+* `vim -S header-files-work.vim` to restore the session. or use `:source saved_session.vim`
+
+## Moving between VIM tabs
+* `gt`
+* `g<TAB>`
