@@ -19,11 +19,11 @@ bindkey -v
 
 ### iterm
 * Go to `Preferences`->`Profiles=Create a new profile`
-* Select newly created profile and go to `keys`->`HotKey Window`->`select checkbox`->`configure HotKey window`. Record HostKey as <option>-<space>
-* set/check `colors`->`colors-preset=select Pastel` or set the color-preset that suits you.
+* Select newly created profile and go to `keys`->`HotKey Window`->`select checkbox`->`configure HotKey window`. Record HostKey as <option>-<space>. select `Pin hotkey window` as well.
+* set/check `colors`->`colors-preset->Pastel` or set the color-preset that suits you.
 Ref: https://www.freecodecamp.org/news/jazz-up-your-zsh-terminal-in-seven-steps-a-visual-guide-e81a8fd59a38/
-* `Text->Font=Monaco->Size=14`
-* `Window`->`Style=Maximized`->`space=All Spaces`
+* `Text->Font=Monaco->Size=14` or `Powerline fonts` if you want to use fancy icons in terminal in vim airline plugin
+* `Window`->`Style=Maximized`->`space=current Space`->`screen=screen with cursor`
 * For mouse to work in Tmux: `Preferences`->`Advanced`->search for tmux-> Double-report scroll wheel events to work around tmux scrolling bug -> `yes`
 * If powerline-fonts are installed and is being used, then set the fonts to `Inconsolata-dz for powerline` so that `fancy icons` can be displayed properly in the vim status-line or zsh prompt
 
