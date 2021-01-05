@@ -1,9 +1,30 @@
 ---
 title: "Multihop SSH Tunnel to access Vagrant VM Service"
 date: 2021-01-05T21:09:04Z
-draft: false
+draft: true
 tags: ["vagrantfile", "vagrant", "ssh", "ssh tunnel", "multi hop tunnel"]
 ---
+
+<!--- Below style are also defined in static/css/my.css file.
+They are repeatedly defined here so that pandoc can generate
+the final HTML with all necessary css styles.
+Note: draft: true above. This prevents publishing it to GitHUB.
+--->
+<style>
+/* To highlight text in Green in pre tag */
+.hl {color: #008A00;}
+/* To highlight text in Bold Green in pre tag */
+.hlb {color: #008A00; font-weight: bold;}
+/* To highlight text in Bold Red in pre tag */
+.hlbr {color:#e90001; font-weight: bold;}
+/* <code> tag does not work in blogger. Use following class with span tag */
+.code {
+    color:#7e168d; 
+    background: #f0f0f0; 
+    padding: 0.1em 0.4em;
+    font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+</style>
 
 ## Multihop SSH tunnel to access Vagrant VM Service
 ### Following is the scenario:
