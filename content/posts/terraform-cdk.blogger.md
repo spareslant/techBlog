@@ -23,14 +23,16 @@ tags: ["terraform", "aws", "cdk", "typescript", "node.js"]
 
 # Introduction
 We will be exploring the `terraform-cdk` toolkit in this article. We shall be using an AWS account to spin up a VM. We shall be doing following.
-- Create A brand New VPC (Not touching existing default VPC)
-- Create 3 subnets ( 1 public, 2 private)
-- A security Group to allow incoming SSH traffic and allow all outgoing.
-- A key-pair for ssh
-- An additional internet-gateway in AWS (It is needed to get internet connectity to new VPC.)
-- A new VM created in above mentioned VPC, and public subnet having internet connectivity and allows ssh connection from internet.
+
+* Create A brand New VPC (Not touching existing default VPC)
+* Create 3 subnets ( 1 public, 2 private)
+* A security Group to allow incoming SSH traffic and allow all outgoing.
+* A key-pair for ssh
+* An additional internet-gateway in AWS (It is needed to get internet connectity to new VPC.)
+* A new VM created in above mentioned VPC, and public subnet having internet connectivity and allows ssh connection from internet.
 
 **Note1:** We shall be using `typescript` for terraform-cdk.
+
 **Note2:** We need to create an additional Internet-Gateway because, existing internet-gateway is attached to default VPC in the account, and an Internet-gateway cannot be attched to more than one VPC.
 
 
