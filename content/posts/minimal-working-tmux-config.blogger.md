@@ -86,3 +86,10 @@ tmux -u
 ```
 **Note:** `-u` is specified for terminals where locale is not set to `UTF-8`
 **Note** To change the title of pane run this command `ctrl-b :select-pane -T MyTitle`
+
+### Another minimal config
+```
+set-option -g mouse on
+set-option -g mode-keys vi
+set-option -g status-style bg=default
+```

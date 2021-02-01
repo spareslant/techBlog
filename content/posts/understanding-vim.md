@@ -289,6 +289,14 @@ https://vimhelp.org/terminal.txt.html
 * now press `c` to replace the word and press <ESC>
 * press `n` to go to next word and press `.` (dot) and replace the word
 
+## Search and replace a pattern (starting from existing position) in visual mode - 2nd method
+* press `v` to go in visual mode, and start selecting pattern using motion keys like `l,h,w,b` etc. e.g vEE (to select two words that may have non-word chars)
+* press `c` now to cut the content in `"` register and start in insert mode
+* edit the text and when finished press <ESC> to go in normal mode.
+* press `/` to go in search mode and press `ctrl+r "` to paste the cut contents and press <Enter>. This will move the cursor to the next searched pattern.
+* now press `.` to replace the pattern
+* press `n` to move to next search and press `.` to replace it again.
+
 ## Search and replace in visual mode
 * select the block of text with `ctrl+v`
 * press <ESC>
@@ -490,3 +498,22 @@ we want to cut the column before `:` and paste is somewhere else.
 ## Moving between VIM tabs
 * `gt`
 * `g<TAB>`
+
+
+## Minimal vim configuration
+```
+set nocompatible
+set sw=2
+set ts=2
+set softtabstop=2
+set hlsearch
+set incsearch
+syntax on
+filetype on
+filetype plugin on
+filetype indent on
+filetype plugin indent on
+set autoindent
+set expandtab
+set backspace=indent,eol,start
+```
