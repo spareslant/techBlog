@@ -1,7 +1,7 @@
 ---
 title: "Kubernetes Cluster Using CRI-O"
 date: 2021-02-07T22:18:02Z
-draft: true
+draft: false
 tags: ["k8s", "kubernetes", "vagrant", "vagrantfile", "cri-o", "virtualbox", "cgroups"]
 ---
 
