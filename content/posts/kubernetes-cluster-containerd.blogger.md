@@ -606,6 +606,14 @@ Login to the `worker1` node
 ```bash
 vagrant ssh worker1
 ```
+
+## Fix the `/etc/hosts` file
+In `/etc/hosts` file, make sure `worker1.virtual.machine` and `worker1` are pointing to `10.0.0.12`.
+```bash
+10.0.0.12 master.virtual.machine master
+```
+Note: `10.0.0.12` is defined in `vagrantfile`.
+
 ### Install `containerd` container runtime
 Instructions for this page https://kubernetes.io/docs/setup/production-environment/container-runtimes/#containerd were followed to install the container runtime
 
@@ -711,12 +719,12 @@ As above output says, `worker1` has joined the cluster successfully.
 
 ## Verify cluster installation
 
-### Check nodes status
+### Check nodes status on `master` (control plane) node
 ```bash
 vagrant@master:~$ kubectl get nodes -o wide
-NAME      STATUS   ROLES                  AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION       CONTAINER-RUNTIME
-master    Ready    control-plane,master   75m   v1.20.2   10.0.0.10     <none>        Ubuntu 18.04.5 LTS   4.15.0-130-generic   containerd://1.3.3
-worker1   Ready    <none>                 14m   v1.20.2   10.0.2.15     <none>        Ubuntu 18.04.5 LTS   4.15.0-130-generic   containerd://1.3.3
+NAME      STATUS   ROLES                  AGE    VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION       CONTAINER-RUNTIME
+master    Ready    control-plane,master   123m   v1.20.2   10.0.0.10     <none>        Ubuntu 18.04.5 LTS   4.15.0-130-generic   containerd://1.3.3
+worker1   Ready    <none>                 18s    v1.20.2   10.0.0.12     <none>        Ubuntu 18.04.5 LTS   4.15.0-130-generic   containerd://1.3.3
 ```
 
 ### Create an `nginx` deployment
