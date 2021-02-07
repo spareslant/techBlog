@@ -589,7 +589,7 @@ vagrant ssh worker1
 ## Fix the `/etc/hosts` file
 In `/etc/hosts` file, make sure `worker1.virtual.machine` and `worker1` are pointing to `10.0.0.12`.
 ```bash
-10.0.0.12 master.virtual.machine master
+10.0.0.12 worker1.virtual.machine worker1
 ```
 Note: `10.0.0.12` is defined in `vagrantfile`.
 
