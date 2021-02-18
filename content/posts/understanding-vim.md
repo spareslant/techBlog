@@ -508,12 +508,13 @@ set ts=2
 set softtabstop=2
 set hlsearch
 set incsearch
-syntax on
-filetype on
-filetype plugin on
-filetype indent on
-filetype plugin indent on
 set autoindent
 set expandtab
 set backspace=indent,eol,start
+syntax on
+filetype on
+filetype plugin indent on
 ```
+## invoke vi editor in bash command-line editing
+* `export VISUAL=/usr/bin/vim` or `export EDITOR=vim`
+* press `ctrl-x ctrl-e` on bash command line to invoke temp vim editor.
