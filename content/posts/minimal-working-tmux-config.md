@@ -66,6 +66,8 @@ tmux -u
 ```
 **Note:** `-u` is specified for terminals where locale is not set to `UTF-8`
 **Note** To change the title of pane run this command `ctrl-b :select-pane -T MyTitle`
+**Note** To change the title of window run this command `ctrl-b :rename-window MyTitle2` or `ctrl-b ,` and then type MyTitle2.
+**Note** If pane title changes after pressing enter or after doing ssh, that means shell prompt is sending escape sequence to set the terminal title. In order to disable this behaviour, set the simple terminal promt. e.g. `PS1="\u@\h:\w\n$ "` and then set pane title. Window title once set do not change.
 
 ### Another minimal config
 ```
