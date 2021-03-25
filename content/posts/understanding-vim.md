@@ -505,7 +505,9 @@ we want to cut the column before `:` and paste is somewhere else.
 ## Search and replace interactively in multiple files by using args
 * `vim * -c ':argdo %s/YAHOO/yahoo/gc | update'` => This command will open all files in current directory and tries to replace text YAHOO with yahoo interactively.
 
-
+## replace a bunch of text with a copied text.
+* Copy some text in vim first either using visual mode or via `line1,line2y`
+* `:75,79d | .normal k"0p` => This command will delete the contents between 75 and 79 lines and insert the text copied in previous step. Content copied in previous step may be bigger and larger than the deleted content and it fits nicely
 ## Save a VIM session
 * `:mksession saved_session.vim`
 * `vim -S header-files-work.vim` to restore the session. or use `:source saved_session.vim`

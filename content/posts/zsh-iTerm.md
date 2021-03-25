@@ -25,6 +25,7 @@ Ref: https://www.freecodecamp.org/news/jazz-up-your-zsh-terminal-in-seven-steps-
 * `Text->Font=Monaco->Size=14` or `Powerline fonts` if you want to use fancy icons in terminal in vim airline plugin
 * `Window`->`Style=Maximized`->`space=current Space`->`screen=screen with cursor`
 * For mouse to work in Tmux: `Preferences`->`Advanced`->search for tmux-> Double-report scroll wheel events to work around tmux scrolling bug -> `yes`
+* To enable `alt` key (for some applications like git-fuzzy) => `Preferences`->`Profiles`->`select the profile`->`Keys`->`Left Option Key` -> `Esc+`. Same for `Right Option key` -> `Esc+`
 * If powerline-fonts are installed and is being used, then set the fonts to `Inconsolata-dz for powerline` so that `fancy icons` can be displayed properly in the vim status-line or zsh prompt
 
 
