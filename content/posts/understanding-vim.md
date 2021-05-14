@@ -57,6 +57,7 @@ tags: ["vim"]
 * :help :, => command mode , help
 * :help ^W => help for windows,tab, switching between tabs and windows
 * :help key-codes => list of key-codes for special keys like <ESC>, <Up> etc
+* :help autocmd-events => list of all events
 
 ## repeat actions from register in insert mode.
 * in NORMAL mode, press`q`<a char> e.g. qw to start recording actions in `w` register. When finish come to normal mode and press `q` again to register all the actions in `w` register. In order to repeat the actions in saved in `w` register, following are the two methods.
@@ -98,7 +99,7 @@ tags: ["vim"]
 * `q/` and `q?` do the same for searches.
 * Also, while you are typing a command, you can press `Ctrl-f` to open the command-line window and continue editing the command there.
 
-## Move lines.
+## Move lines.(cut lines)
 * `:.m-3` => moves current line 2 lines above.
 * `:5,7m 21` => moves line 5-7 after line 21
 
@@ -284,7 +285,7 @@ https://vimhelp.org/terminal.txt.html
 
 ## Search and replace any pattern in visual/normal mode
 * search the word first using `/wordtosearch`
-* press `n` and go to that word or `N` to go backward.
+* press `n` and go to that word or `N` to go backward. [This step is not required]
 * press `v` to go in visual mode and select pattern using motion keys like `l,h,w,b` etc.
 * now press `c` to replace the word and press <ESC>
 * press `n` to go to next word and press `.` (dot) and replace the word
@@ -516,6 +517,9 @@ we want to cut the column before `:` and paste is somewhere else.
 * `gt`
 * `g<TAB>`
 
+## Using VIM as less
+* cat <somefile> | vim -R -
+
 
 ## Minimal vim configuration
 ```
@@ -534,4 +538,21 @@ filetype plugin indent on
 ```
 ## invoke vi editor in bash command-line editing
 * `export VISUAL=/usr/bin/vim` or `export EDITOR=vim`
-* press `ctrl-x ctrl-e` on bash command line to invoke temp vim editor.
+* In `emacs` editing mode in zsh/bash press `ctrl-x ctrl-e` command line to invoke temp vim editor. 
+* In `vi` editing mode in zsh/bash press v (two times) and the line will be opened in a temp file
+
+## special keys can be used in vimrc in command mode in following format
+* <space>
+* <c-d>
+* <esc>
+* <leader>
+* <localleader>
+* <cr>
+* <nop>
+* <buffer>
+* <left>
+* <cword> => the word under the cursor
+* <cWORD>
+
+* `normal!` doesn't recognize "special characters" like <cr>. There are a number of ways around this, but the easiest to use and read is execute
+* variables starting with an @ are registers. @@ is the "unnamed" register: the one that Vim places text into when you yank or delete without specify a particular register.

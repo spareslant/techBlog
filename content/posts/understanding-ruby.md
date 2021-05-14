@@ -59,7 +59,8 @@ D.a_class_method
 p = Proc.new {|x| puts x.upcase }
 %w{ David Black }.each(&p)
 ```
-*  A method call can include both an argument list and a code block. Without a special flag like &, a Ruby method has no way of knowing that you want to stop binding parameters to regular arguments and instead perform a block-to-proc conversion and save the results.
+* The Kernel#proc method is an alias for Proc.new 
+*     A method call can include both an argument list and a code block. Without a special flag like &, a Ruby method has no way of knowing that you want to stop binding parameters to regular arguments and instead perform a block-to-proc conversion and save  the results. 
 ```
 def capture_block(&block)
   puts "Got block as proc"
@@ -70,6 +71,17 @@ capture_block { puts "Inside the block" }
 p = Proc.new { puts "This proc argument will serve as a code block." }
 capture_block(&p)
 ```
+```
+def greeting(&block)
+  block.call "yahoo", "hotmail"
+end
+
+aproc = Proc.new { |a, b| puts "This is a proc object = #{a} #{b}"}
+
+greeting { |x, y| puts "This is a block = #{x} #{y}" }
+greeting &aproc
+```
+
 * the & in capture_block(&p) does two things: it triggers a call to p’s to_proc method, and it tells Ruby that the resulting Proc object is serving as a code block stand-in
 * The Proc object carries its context around with it.
 * Procs differ from methods, with respect to argument handling, in that they don’t care whether they get the right number of arguments
@@ -109,3 +121,53 @@ joe = Person.new do
   age 37
 end
 ```
+* Like any object, classes also have methods. Remember what you learned in ​What’s in an Object​? The methods of an object are also the instance methods of its class. In turn, this means that the methods of a class are the instance methods of Class:
+* class names are nothing but constants
+* Any reference that begins with an uppercase letter, including the names of classes and modules, is a constant
+* If you can change the value of a constant, how is a constant different from a variable? The one important difference has to do with their scope. The scope of constants follows its own special rules
+* you can put any code you want in a class definition:
+* Class definitions also return the value of the last statement, just like methods and blocks do
+* wherever you are in a Ruby program, you always have a current object: self.  Likewise, you always have a current class (or module). When you define a method, that method becomes an instance method of the current class.
+* At the top level of your program, the current class is Object, the class of main. (That’s why, if you define a method at the top level, that method becomes an instance method of Object.)
+* When you open a class with the class keyword (or a module with the module keyword), that class becomes the current class.
+* Module#class_eval is actually more flexible than class. You can use class_eval on any variable that references the class, while class requires a constant. Also, class opens a new scope, losing sight of the current bindings, while class_eval has a Flat Scope (Flat Scope)
+*  ​Instance variables live in objects; methods live in classes​
+* Every line of Ruby is always executed inside an object, so you can call the instance methods in Kernel from anywhere. This gives you the illusion that print is a language keyword, when it’s actually a method.
+* Every line of Ruby code is executed inside an object—the so-called current object. The current object is also known as self, because you can access it with the self keyword.
+Only one object can take the role of self at a given time, but no object holds that role for a long time. In particular, when you call a method, the receiver becomes self. From that moment on, all instance variables are instance variables of self, and all methods called without an explicit receiver are called on self. As soon as your code explicitly calls a method on some other object, that other object becomes self.
+* Private methods are governed by a single simple rule: you cannot call a private method with an explicit receiver. In other words, every time you call a private method, it must be on the implicit receiver—self
+* Can object x call a private method on object y if the two objects share the same class? The answer is no, because no matter which class you belong to, you still need an explicit receiver to call another object’s method. Can you call a private method that you inherited from a superclass? The answer is yes, because you don’t need an explicit receiver to call inherited methods on yourself.
+* A Refinement is active in only two places: the refine block itself and the code starting from the place where you call using until the end of the module (if you’re in a module definition) or the end of the file (if you’re at the top level)
+* Object#send method is very powerful—perhaps too powerful. In particular, you can call any method with send, including private methods
+* Some languages, such as Java and C#, allow “inner scopes” to see variables from “outer scopes.” That kind of nested visibility doesn’t happen in Ruby, where scopes are sharply separated: as soon as you enter a new scope, the previous bindings are replaced by a new set of bindings
+* Class Instance Variable can be accessed only by the class itself—not by an instance or by a subclass.
+* Class variables are different from Class Instance Variables because they can be accessed by subclasses and by regular instance methods. (In that respect, they’re more similar to Java’s static fields.)
+* class variables don’t really belong to classes—they belong to class hierarchies.
+* You can define a Singleton Method with either the syntax below or the Object#define_singleton_method method.
+```ruby
+str = "just a regular string"
+def str.title?
+  self.upcase == self
+end
+```
+*  In a dynamic language such as Ruby, the “type” of an object is not strictly related to its class. Instead, the “type” is simply the set of methods to which an object can respond.
+* class methods are: they’re Singleton Methods of a class
+* Ruby objects don’t have attributes
+* All the attr_* methods are defined on class Module, so you can use them whenever self is a module or a class
+* Ruby has a special syntax, based on the class keyword, that places you in the scope of the singleton class:
+```
+class​ << an_object​ 	
+  ​# your code here​
+​end
+```
+* singleton classes have only a single instance (that’s where their name comes from), and they can’t be inherited. More important, a singleton class is where an object’s Singleton Methods live:
+* Although modules can have singleton classes like any other object, the singleton class of Kernel is not part of obj’s or #D’s ancestor chains
+* class methods are just Singleton Methods that live in the class’s singleton class
+* A Binding is a whole scope packaged as an object. The idea is that you can create a Binding to capture the local scope and carry it around. Later, you can execute code in that scope by using the Binding object in conjunction with eval.
+
+* `String.methods` => list methods of `String` class itself. As every class is an object itself, so that means `String.methods` is listing class methods in this case. i.e class methods of `String` class. The list retreived also includes inherited methods of its superclasses.
+* `String.methods(false)` => lists non-inherited methods (class methods) of `String` class.
+* `String.instance_methods` => list methods of object which are created from `String` class. This list also included inherited instance methods. Note this list is distinct from above `String.methods` list. However some method names may be same, but they are different methods in each list.
+* `String.instance_methods(false)` => list methods of object which are created from `String` class. This list does NOT contains inherited instance methods.
+* `"abc".methods` => list methods, that can be applied to a `String` object "abc". This will list all the instance methods (including inherited ones) of object "abc" i.e all the instance methods defined in `String` class. That means `String.instance_methods == "abc".methods`.
+
