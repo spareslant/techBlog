@@ -39,6 +39,9 @@ tags: ["vim"]
 * `ctrl+r` => redo
 * `e!<enter>` => undo all changes
 
+## save and quit
+* `ZZ` => Save and quit
+* `ZQ` => Quit without saving
 
 ## Delete in Insert mode.
 * `ctrl+h` => deletes one char in backward direction
