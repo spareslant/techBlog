@@ -80,6 +80,7 @@ tags: ["vim"]
 * `:ls` => list current buffers
 * `:b <buffer number>` => jump to that buffer (file)
 * `:edit /tmp/yahoo | r! ls -l `
+* `:ba` => open all buffers in current window
 
 ## Filters
 * `:1,$ ! perl -wpl -e 's/Content/CONTENT/g'`
@@ -512,6 +513,7 @@ we want to cut the column before `:` and paste is somewhere else.
 ## replace a bunch of text with a copied text.
 * Copy some text in vim first either using visual mode or via `line1,line2y`
 * `:75,79d | .normal k"0p` => This command will delete the contents between 75 and 79 lines and insert the text copied in previous step. Content copied in previous step may be bigger and larger than the deleted content and it fits nicely
+
 ## Save a VIM session
 * `:mksession saved_session.vim`
 * `vim -S header-files-work.vim` to restore the session. or use `:source saved_session.vim`
@@ -519,6 +521,46 @@ we want to cut the column before `:` and paste is somewhere else.
 ## Moving between VIM tabs
 * `gt`
 * `g<TAB>`
+
+## Edit a pattern in a text file - example-1
+Convert following line
+```
+           ["from", "person", "hobbies", "2", "0", "outdoor"]
+```
+into
+```
+inputPath = "/from/person/hobbies/2/0/outdoor"
+```
+* `:s/"//g | s/, /\//g | s/\[/"\//g | s/\]/"/g | .normal IinputPath = ctrlvctrl[==ctrlvctrl[` 
+*****Note**: ctrlvctrl[ => places <ESC> , == is for indentation
+
+## Edit a pattern in a text file - example-2
+Convert following line
+```
+            , "Travel") 
+
+```
+into
+```
+inputPathValue = "Travel"
+```
+
+* `:s/, // | s /)//g | normal IinputPathValue = ^[<<....]`
+Note: << is for left indentation and ... are repeating the last command
+
+## Edit a pattern in a text file - example-3
+Convert following line
+```
+             ["from", "mars", "plan", "locality"], "City")
+
+```
+into 
+```
+  inputPath = "/from/mars/plan/locality"
+ 	inputPathValue = "City"
+```
+* `.normal f]a^M^[k:s/"//g | s/, /\//g | s/\[/"\//g | s/\]/"/g | .normal IinputPath = ^[==^[j:s/, // | s /)//g | normal IinputPathValue = ^[<<....^[
+`
 
 ## Using VIM as less
 * cat <somefile> | vim -R -
@@ -539,10 +581,12 @@ syntax on
 filetype on
 filetype plugin indent on
 ```
+
 ## invoke vi editor in bash command-line editing
 * `export VISUAL=/usr/bin/vim` or `export EDITOR=vim`
 * In `emacs` editing mode in zsh/bash press `ctrl-x ctrl-e` command line to invoke temp vim editor. 
 * In `vi` editing mode in zsh/bash press v (two times) and the line will be opened in a temp file
+* In `vi` editing mode in order to delete a word backword use `daW`and then use `.` command to repeat the deletion
 
 ## special keys can be used in vimrc in command mode in following format
 * <space>
@@ -559,3 +603,90 @@ filetype plugin indent on
 
 * `normal!` doesn't recognize "special characters" like <cr>. There are a number of ways around this, but the easiest to use and read is execute
 * variables starting with an @ are registers. @@ is the "unnamed" register: the one that Vim places text into when you yank or delete without specify a particular register.
+
+## create vertical line in a block of text using macro
+We will place commented vertical linein the following block of rust code.
+```rust
+fn references_example_1() {
+    println!("======== references_example_1 ========");
+    let a = "yahoo;
+    let mut b = &a;                                                                                                                                                                                                 
+    println!("a = {}, b = {}", a, b);
+    // a = "hotmail";
+    b = &"oracle";
+    println!("a = {}, b = {}", a, b);
+
+}
+```
+* place the cursor on line 3 (this where we want to start commenting)
+* We shall store the action in a register named `z`.
+* Go in Normal mode.
+* press `qzq` to empty the register `z`.
+* press `qz` to start recording in register `z`.
+* Now press the following sequence of keys to place the first vertical line comment.
+* `$50a<space><esc>45|d$a// |<esc>j` => this will place // | at the current line at coloumn number 45 and move the cursor to next line.
+* press `q` to stop recording.
+* now press @z to place // | in current line. It will move the cursor to next line.
+* now keep on pressing @@ to keep entering // | in subsequent lines.
+* final text will look like below.
+```rust
+fn references_example_1() {
+    println!("======== references_example_1 ========");
+    let a = "yahoo;                         // |
+    let mut b = &a;                         // |
+                                            // |
+    println!("a = {}, b = {}", a, b);       // |
+    // a = "hotmail";                       // |
+    b = &"oracle";                          // |
+    println!("a = {}, b = {}", a, b);       // |
+
+}
+
+```
+* Explanation of `$50a<space><esc>45|d$a// |<esc>j`
+   * $ => moves the end of current line.
+   * 50a<space><esc> => inserts 50 spaces from the end of current line.
+   * 45| => moves the cursor to column 45. Note 45 is counted right from the left edge of the screen not from the end of line.
+   * d$ => from 45 column onwards delete any extra spaces introduced by 50a<space><esc> command.
+   * a => go in insert mode and start appending
+   * // |<esc> => the actual text to be inserted at column 45.
+   * j => move the cursor to the next line.
+
+### Edit the macro
+* If we want to the place the // | at line 40 we can edit the macro with following steps.
+* In the above step, we had created the macro in `z` register.
+* Somewhere in empty place in vim, run the following command in Normal mode.
+* `"zp` => paste the contents of `z` register in current cursor position. It will look like this => $50a ^[<80><fd>a45|d$a// |^[j
+* Edit the 45 number to your desired number.
+* press `v` to go in visual mode and keep pressing `l` till the end (upto j).
+* press `"zy` => to copy the highlighted text in `z` register.
+* Now you can use `@z` to insert // | at column 45 in the lines.
+* you can delete the line where you pasted the content from macro.
+
+### Place another vertical line on the left of existing line.
+* Above we inserted // | at column 45. Now we want to insert || / at 39 at the left this vertical wall
+* We will be recording sequence in `q` macro.
+* press `qqq` to empty the `q` register.
+* press `qq` again to start recording in `q` register.
+* Now go to line 3 again and press following key sequences.
+* 39|R// |<esc>j => this will place // | at the cloumn 39 and moves cursor to next line.
+* press `q` to stop recording.
+* Now press `@q` to insert // | in current line and move the cursor to next (automatically).
+* Now keep on pressing `@@` to keep on inserting // | in subsequent lines. 
+* final result will look like below
+```rust
+fn references_example_1() {
+    println!("======== references_example_1 ========");
+    let a = "yahoo;                   // |  // |
+    let mut b = &a;                   // |  // |
+                                      // |  // |
+    println!("a = {}, b = {}", a, b); // |  // |
+    // a = "hotmail";                 // |  // |
+    b = &"oracle";                    // |  // |
+    println!("a = {}, b = {}", a, b); // |  // |
+
+}
+
+```
+
+

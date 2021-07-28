@@ -156,9 +156,9 @@ end
 * All the attr_* methods are defined on class Module, so you can use them whenever self is a module or a class
 * Ruby has a special syntax, based on the class keyword, that places you in the scope of the singleton class:
 ```
-class​ << an_object​ 	
-  ​# your code here​
-​end
+class << an_object
+  # your code here
+end
 ```
 * singleton classes have only a single instance (that’s where their name comes from), and they can’t be inherited. More important, a singleton class is where an object’s Singleton Methods live:
 * Although modules can have singleton classes like any other object, the singleton class of Kernel is not part of obj’s or #D’s ancestor chains
