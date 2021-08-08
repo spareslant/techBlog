@@ -193,7 +193,7 @@ tags: ["vim"]
    * `ctrl+w |` => maximizes width of window
    * `ctrl+w =` => restores all window sizes to equal proportions.
 * `ctrl+w q`  => closes window
-* `<num>ctrl+w _` => make current window height to max
+* `<num>ctrl+w` => make current window height to max
 * `<num>ctrl+w |` => make currrent window width to max
 * `<num>ctrl+w =` => make all windows of equal size.
 * `<num>ctrl+w [+-]` => window resize vertically
@@ -231,7 +231,7 @@ https://vimhelp.org/terminal.txt.html
 * `:g/yahoo/.norm 10nwi_zzz` => repeat nwi_zzz 10 times on a line. 
 
 ## operation on all occurence of match
-* `:%s/yahoo/&_zzz/g` => append _zzz at the `end of every matching word` containing yahoo
+* :%s/yahoo/&_zzz/g => append _zzz at the `end of every matching word` containing yahoo
 
 ## operations on all the lines matching a pattern
 * `:g/yahoo/t21`  => copy all lines matching yahoo to line 21 onwards
@@ -308,6 +308,18 @@ https://vimhelp.org/terminal.txt.html
 * `:%s/\%Vpattern/replacedPatterm/g`
 * Above will replace only in visually selected area.
 * after pressing <ESC>, do this to search in visually selected area `/\%Vpattern`
+
+## Search and replace in visual mode - method-2
+* select the block of text with `ctrl+v`
+* press c (delete and insert)
+* type the text you want
+* press <ESC>. It will replace the text you typed on the very first selected line
+
+## Search and replace in visual mode - method-3
+* select the block of text with `ctrl+v`
+* press r
+* type the character you want to fill visual block with.
+* press <ESC>. It will replace the entire visual block the the single character only.
 
 ## put quotes around a word using macro
 * `qqq` => clear q register
@@ -606,6 +618,7 @@ filetype plugin indent on
 
 ## create vertical line in a block of text using macro
 We will place commented vertical linein the following block of rust code.
+
 ```rust
 fn references_example_1() {
     println!("======== references_example_1 ========");
@@ -618,6 +631,7 @@ fn references_example_1() {
 
 }
 ```
+
 * place the cursor on line 3 (this where we want to start commenting)
 * We shall store the action in a register named `z`.
 * Go in Normal mode.
@@ -625,10 +639,12 @@ fn references_example_1() {
 * press `qz` to start recording in register `z`.
 * Now press the following sequence of keys to place the first vertical line comment.
 * `$50a<space><esc>45|d$a// |<esc>j` => this will place // | at the current line at coloumn number 45 and move the cursor to next line.
+* 50 is the `width of the max spanned row` + 2 in the paragraph.
 * press `q` to stop recording.
 * now press @z to place // | in current line. It will move the cursor to next line.
 * now keep on pressing @@ to keep entering // | in subsequent lines.
 * final text will look like below.
+
 ```rust
 fn references_example_1() {
     println!("======== references_example_1 ========");
@@ -643,6 +659,7 @@ fn references_example_1() {
 }
 
 ```
+
 * Explanation of `$50a<space><esc>45|d$a// |<esc>j`
    * $ => moves the end of current line.
    * 50a<space><esc> => inserts 50 spaces from the end of current line.
@@ -689,4 +706,75 @@ fn references_example_1() {
 
 ```
 
+## More vertical lines using ex-commands on right side
+* We want to create vertical lines of different texts
+* `:execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"` => inserts // at 39 coloumn and inserts 20 blank spaces after // as well. Inserting extra blank space is required in order to insert text on right side.
+* Now in NORMAL mode you can type @@ to repeat above command, and it will keep on inserting // in subsequent lines. However next ex-command will overwrite @ register.
+* Second option: is to take above ex-command in register and execute register in NORMAL mode. We shall take this ex-command in `r` register.
+   * write above ex-command like this => :execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"<ctl+v><ctrl+Enter>. ctrl+v and ctrl+Enter are literal key press. This will look like below.
+   * :execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"^M
+   * In NORMAL mode, press `v` and select the above ex-command text (using l repeatedly) till ^ point only.
+   * Now press `"ry` to copy this text in `r` register.
+   * Now go to line where you want to insert // and press @r (in NORMAL) mode.
+   * Now keep on pressing `@@` to keep on inserting // | in subsequent lines. 
+* Third option: is to take above ex-command in register and execute register in COMMAND mode. We shall take this ex-command in `r` register.
+   * write above ex-command like this => :execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"
+   * In NORMAL mode, press `v` and select the above ex-command text (using l repeatedly) till " point only.
+   * Now press `"ry` to copy this text in `r` register.
+   * Now go to line where you want to insert // and go to COMMAND mode and press :@r and press enter key in the end.
+   * Go to COMMAND mode and press `:@:` to repeat the last ex-command.
+   * Keep on repeating `@@` in NORMAL mode to keep on inserting // | in subsequent lines.
+
+* We will be storing following 4 command in their own respective registers.
+* :execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"^M  => store it in register `r`. ^M is actually <ctrl+v><ctrl+enter> key sequence 
+* :execute "normal! 43|\<esc>R|a\<esc>j"^M => store it in register `a`. ^M is actually <ctrl+v><ctrl+enter> key sequence
+* :execute "normal! 47|\<esc>R|b\<esc>j"^M => store it in register `b`. ^M is actually <ctrl+v><ctrl+enter> key sequence
+* :execute "normal! 51|\<esc>R|c\<esc>j"^M => store it in register `c`. ^M is actually <ctrl+v><ctrl+enter> key sequence
+
+* We have following text
+```rust
+fn references_example_2() {
+    println!("======== references_example_2 ========");
+    let mut a = "yahoo";
+    let b = &mut a;
+    println!("a = {}, b = {}", a, b);
+    println!("b = {}", b);
+    *b = "oracle";
+    println!("b = {}", b);
+
+    let c = &a;
+
+    println!("a = {}", a);
+
+    println!("b = {}", b);
+
+
+    println!("c = {}", c);
+
+}
+```
+Above text will be converted into
+```rust
+fn references_example_2() {
+    println!("======== references_example_2 ========");
+    let mut a = "yahoo";
+    let b = &mut a;                   //      |b
+                                      //      |b
+    println!("a = {}, b = {}", a, b); //  |a  |b
+                                      //  |a  |b
+    println!("b = {}", b);            //  |a  |b
+    *b = "oracle";                    //  |a  |b
+    println!("b = {}", b);            //  |a  |b
+                                      //  |a  |b
+    let c = &a;                       //  |a  |b  |c
+                                      //  |a  |b  |c
+    println!("a = {}", a);            //  |a  |b  |c
+                                      //      |b  |c
+    println!("b = {}", b);            //      |b  |c
+                                      //          |c
+                                      //          |c
+    println!("c = {}", c);            //          |c
+
+}
+```
 

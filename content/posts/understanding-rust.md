@@ -241,6 +241,8 @@ draft: true
 	- When we bring a name into scope with the use keyword, the name available in the new scope is private
 	- `mod front_of_house;` Using a semicolon after mod front_of_house rather than using a block tells Rust to load the contents of the module from another file with the same name as the module
   - src/main.rs and src/lib.rs are called crate roots. The reason for their name is that the contents of either of these two files form a module named crate at the root of the crate’s module structure, known as the module tree
+  - If a source file has mod declarations in it, the contents of the module files would be inserted in places where mod declarations in the source file are found, before running the compiler over it. In other words, modules don't get compiled individually, only crates get compiled
+  - By default, everything in Rust is private and can only be accessed by the current module and its descendants. In contrast, when an item is declared as pub, it can be thought of as being accessible to the outside world
 
 
 * Vectors
@@ -331,7 +333,8 @@ draft: true
 * Tests
   - Tests fail when something in the test function panics
   - Each test is run in a new thread, and when the main thread sees that a test thread has died, the test is marked as failed.
-
+  -  Unit test results come first, then integration results, and finally, documentation results.
+  - Only library crates can be tested via integration tests because binary crates don't expose any functionality that other crates can use
 
 
 
