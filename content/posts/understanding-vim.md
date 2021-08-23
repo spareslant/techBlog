@@ -778,3 +778,42 @@ fn references_example_2() {
 }
 ```
 
+## Draw table in vim
+* In INSERT mode: |
+* Now in NORMAL mode: yy20p => this draws the vertical line.
+* Keep in NORMAL mode: gg => go to the top of file
+* press ctrl-v to go in BLOCK VISUAL mode
+* press G (shift-g) to select the vertical line till the end.
+* now copy this vertical line in register a by pressing "ay => this also moves the cursor to the top of file.
+* Now create a macro in q register. In NORMAL mode, press qqq to first clear the q register. then press qq again to start recording.
+* Now press 15a<space><esc> to insert 15 spaces in the first line. Note: you have to literally press <space> and <esc> key sequences here
+* Now press "ap => to paste the vertical line at 17th coloumn.
+* Now press q to stop recording.
+* Now press @q to insert vertical 33rd coloumn
+* Now press @@ to insert vertical 49th coloumn
+* Now press @@ to insert vertical 65th coloumn
+* Now press @@ to insert vertical 81st coloumn and so on...
+result will be like this:
+```
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+|               |               |               |               |               |
+```

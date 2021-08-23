@@ -72,7 +72,7 @@ draft: true
 
 * variable shadowing
   - shodowing is done by re-declaring the same variable using `let` key.
-  ```
+  ```rust
   let x = 5;
   let x = "yahoo";
   ```
@@ -153,7 +153,7 @@ draft: true
 
 * Structs
   - Rust supports three struct types: classic structs, tuple structs, and unit structs (source: https://docs.microsoft.com/en-us/learn/modules/rust-understand-common-concepts/4-structs-enums)
-    ```
+    ```rust
     // Classic struct with named fields
     struct Student { name: String, level: u8, pass: bool  }
 
@@ -178,7 +178,7 @@ draft: true
 * Enums
   - Enums are types that can be any one of several variants.
   - Like structs, enum variants can have named fields, fields without names, or no fields at all. Like struct types, enum types are also capitalized.
-  ```
+  ```rust
 	enum WebEvent {
     // An enum variant can be like a unit struct without fields or data types
     WELoad,
@@ -192,7 +192,7 @@ draft: true
 	- All the variants are grouped together in the same `WebEvent` enum type. Each variant in the enum isn't its own type
 	- Any function that uses a variant of the WebEvent enum must accept all the variants in the enum
 	- define an enum with structs
-	```
+	```rust
 	// Define a tuple struct
 	struct KeyPress(String, char);
 
@@ -293,7 +293,7 @@ draft: true
 * Errors
   - A backtrace is a list of all the functions that have been called to get to this point.
   - the key to reading the backtrace is to start from the top and read until you see files you wrote
-  ```
+  ```rust
   enum Result<T, E> {
     Ok(T),
     Err(E),
@@ -327,6 +327,14 @@ draft: true
   - trait implementations is that we can implement a trait on a type only if either the trait or the type is local to our crate.
   - it isn’t possible to call the default implementation from an overriding implementation of that same method.
   - Default implementations can call other methods in the same trait, even if those other methods don’t have a default implementation
+  ```rust
+  let mut i32_vec = Vec::<i32>::new();
+  let mut i32_vec: Vec<i32> = Vec::<i32>::new();
+  let mut i32_vec: Vec<i32> = Vec::new();
+  let mut i32_vec = Vec::new();
+
+  Note: All above statements are same
+  ```
 
 
 
