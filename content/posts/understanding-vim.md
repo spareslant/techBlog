@@ -75,6 +75,7 @@ tags: ["vim"]
 * `ctrl+x ctrl+]` => Tag completion (ctags)
 * `ctrl+x ctrl+F` => Filename completions
 * `ctrl+x ctrl+o` => omni completions => `:pc` to close preview pane
+* `ctrl+x ctlr+p repeatedly` => To complete the lines from existing text
 
 ## buffers
 * `:ls` => list current buffers
@@ -158,7 +159,7 @@ tags: ["vim"]
 ## Paste a command output in the file
 * `:read ! ls -l` => will paste the output of ls -l command into current cursor position
 
-## vscode change change escape key binding
+## vscode change escape key binding
 * in vscode => settings => vim: Handle Keys => Add following
 ```
 "vim.insertModeKeyBindingNonRecursive" : [
@@ -506,7 +507,9 @@ we want to cut the column before `:` and paste is somewhere else.
 * now run following command to replace the pattern
 * `:cfdo %s/pattern/NEW_PATTERN/gc | update`
 * you can view `quickfix` list manually as well via `clist` or `copen` command.
-* use `cnext` => to move to next file in quickfix window
+* use `cnext` => to move to next match in quickfix window
+* in NORMAL mode use `@:` to repeat last executing ex-command, ie. in this case :cnext
+* If you want to remove entries from quickfix window then swith to quickfix window by pressing `Ctrl+w w` and then `:set modifiable`. Now you can run normal vim commands here, like `dd` or `:g/<pattern>/d`
 
 ## Search and replace interactively in multiple files using standard unix tools and quickfix
 * `vim -q <(egrep -n -R yahoo *) -c ':copen'` => This command will search for pattern `yahoo` in all the files recursively in current directory and populate the `quickfix` list.
