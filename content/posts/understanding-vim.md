@@ -200,7 +200,7 @@ tags: ["vim"]
 ## Vim Dir explorer
 
 * open vim and run `:Lexplore`, then `:vertical resize 40`
-* optional settings: let g:netrw_browse_split = <number>
+* optional settings: `let g:netrw_browse_split = <number>`
 
 
 ## Paste a command output in the file
@@ -262,7 +262,9 @@ tags: ["vim"]
 * `:only` => close all other buffers and open only the current one
 
 https://vimhelp.org/pi_netrw.txt.html
+
 https://vimhelp.org/windows.txt.html#window-resize
+
 https://vimhelp.org/terminal.txt.html
 
 
@@ -300,7 +302,7 @@ https://vimhelp.org/terminal.txt.html
 
 ## operation on all occurence of match
 
-* :%s/yummy/&_zzz/g => append _zzz at the `end of every matching word` containing yummy
+* `:%s/yummy/&_zzz/g` => append _zzz at the `end of every matching word` containing yummy
 
 
 ## operations on all the lines matching a pattern
@@ -352,16 +354,17 @@ https://vimhelp.org/terminal.txt.html
 * `zE` => eleminiate all folds
 * `zO` => open all folds
 
-* spell suggesstion
+## spell suggesstion
+
 * `z=`
 
 
 ## Search and perform an operation on all searches
 
 * `/yummy`  => search for something first
-* `qqq` => clear q register. 1st q --> starts recording, 2nd q --> name of the reg ro record into, 3rd q ---> stop recording. Now `q` register is empty. we could have used `qaq` as well, in this case register is `a`
-* `qq` => start recording actions in q register. Now type `eai_zzz<esc>n`. This is going to append _zzz to the end word containing the string `yummy`. type q again to stop recording. <esc> can be entered by pressing ctrl-v + <esc>
-* now press @q to run the macro on next search. Keep in repeating @q in order to apply macro on next search. After pressing @q first time, you can repeat @q by using @@.
+* `qqq` => clear q register. 1st `q` --> starts recording, 2nd `q` --> name of the reg ro record into, 3rd `q` ---> stop recording. Now `q` register is empty. we could have used `qaq` as well, in this case register is `a`
+* `qq` => start recording actions in `q` register. Now type `eai_zzz<esc>n`. This is going to append `_zzz` to the end word containing the string `yummy`. type `q` again to stop recording. `<esc>` can be entered by pressing `ctrl-v`  `<esc>` or `ctrl-v` `ctrl-[`
+* now press `@q` to run the macro on next search. Keep in repeating @q in order to apply macro on next search. After pressing `@q` first time, you can repeat `@q` by using `@@`.
 * NOTE: you do not need to press `n` to move to next search. However you can press n to skip search. 
 
 
