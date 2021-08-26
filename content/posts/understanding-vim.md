@@ -160,7 +160,7 @@ tags: ["vim"]
 ## marks
 
 * `ma` => created a mark named `a` at a given line 
-* <`a> => move back to the marked position.
+* ``  `a  `` => move back to the marked position.
 
 ## tabs in insert mode
 
