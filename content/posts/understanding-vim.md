@@ -7,11 +7,11 @@ tags: ["vim"]
 
 ## motion
 
-* `ctrl+e` => move screen down with moving cursor. `ctrl+y` => reverse
+* `ctrl-e` => move screen down with moving cursor. `ctrl-y` => reverse
 * `*` => search whole word under the cursor in file. `#` => search backwards
 * `H M L`  => (50% screen scroll) High, Medium, Low cusror postion in current viewport of screen
-* `ctrl+d` => 25% screen scroll along with cursor. `ctrl+u` => reverse
-* `ctrl+f` => full screen scroll along with cursor. `ctrl+b` => reverse
+* `ctrl-d` => 25% screen scroll along with cursor. `ctrl-u` => reverse
+* `ctrl-f` => full screen scroll along with cursor. `ctrl-b` => reverse
 * `g_` => move cursor to the end of line till first non-blank character.
 * `gE` => move cursor to the end of previous word. special chars are not treated special.
 * `50gg` => moves cursor to line 50 in normal mode.
@@ -23,7 +23,7 @@ tags: ["vim"]
 * To move to start of end of highlisted text (in visual mode): `< and `>
 * To move to a marked postion: `<marked char> (to mark: m<aChar>).
 * To move between the changes done in file: `g;` and `g,`
-* To move between the jumps done in file: `ctrl+o` and `ctrl+i`
+* To move between the jumps done in file: `ctrl-o` and `ctrl-i`
 * To move the cursor to its last postion when file was closed: `"
 
 
@@ -39,7 +39,7 @@ tags: ["vim"]
 * `g-` => undo
 * `g+` => redo
 * `u` => undo
-* `ctrl+r` => redo
+* `ctrl-r` => redo
 * `e!<enter>` => undo all changes
 
 
@@ -51,9 +51,9 @@ tags: ["vim"]
 
 ## Delete in Insert mode.
 
-* `ctrl+h` => deletes one char in backward direction
-* `ctrl+w` => deletes a word in backward direction.
-* `ctrl+u` => deletes till the start of line in backward direction.
+* `ctrl-h` => deletes one char in backward direction
+* `ctrl-w` => deletes a word in backward direction.
+* `ctrl-u` => deletes till the start of line in backward direction.
 
 
 ## Delete leading white space
@@ -78,20 +78,20 @@ tags: ["vim"]
 
 * in NORMAL mode, press`q`<a char> e.g. qw to start recording actions in `w` register. When finish come to normal mode and press `q` again to register all the actions in `w` register. In order to repeat the actions in saved in `w` register, following are the two methods.
    * In order to repeat all the actions in exactly same manner, go to normal mode and type `@w`
-   * In order to paste all the chars in register, go to insert mode and type `ctrl+rw`
+   * In order to paste all the chars in register, go to insert mode and type `ctrl-rw`
 
 
 ## Paste from registers
 
-* `4yy` => copied text in normal mode, and to paste this text in Insert mode use `ctrl+r"`
-* `:3,9y` => copies text in command-mode, and to paste this text in Insert mode use `ctrl+r"`
+* `4yy` => copied text in normal mode, and to paste this text in Insert mode use `ctrl-r"`
+* `:3,9y` => copies text in command-mode, and to paste this text in Insert mode use `ctrl-r"`
 
 ## Completion
 
-* `ctrl+x ctrl+]` => Tag completion (ctags)
-* `ctrl+x ctrl+F` => Filename completions
-* `ctrl+x ctrl+o` => omni completions => `:pc` to close preview pane
-* `ctrl+x ctlr+p repeatedly` => To complete the lines from existing text
+* `ctrl-x ctrl-]` => Tag completion (ctags)
+* `ctrl-x ctrl-F` => Filename completions
+* `ctrl-x ctrl-o` => omni completions => `:pc` to close preview pane
+* `ctrl-x ctlr+p repeatedly` => To complete the lines from existing text
 
 
 ## buffers
@@ -110,13 +110,13 @@ tags: ["vim"]
 ## launch vim with terminal
 
 * run command => `vim +term`. This opens two horizontally stacked windows with terminal opened in upper window.
-* `ctrl+w w` => swith to other unwanted window
-* `ctrl+w q` => close this unwanted window
+* `ctrl-w w` => swith to other unwanted window
+* `ctrl-w q` => close this unwanted window
 
 
 ## system clipboard in normal mode
 
-* `"*yy` => copies text in `*` register. now you can use system ctrl+v to paste outside vim.
+* `"*yy` => copies text in `*` register. now you can use system ctrl-v to paste outside vim.
 * `"*dd` => similar to above
 
 
@@ -152,7 +152,7 @@ tags: ["vim"]
 ## command-mode commands
 
 * `:reg` => list registers and its contents
-* `:jumps` => list all jumps. (`ctrl+]` and `ctrl+o`)
+* `:jumps` => list all jumps. (`ctrl-]` and `ctrl-o`)
 * `changes` => list all changes
 * `:@:` => Repeat last command run in command-mode
 
@@ -223,39 +223,39 @@ tags: ["vim"]
 
 ## Window operations
 
-* `ctrl+w =` => resizes all windows equally
-* `ctrl+w p` => move back to previous window
-* `ctrl+w <HJKL>` => move windows
+* `ctrl-w =` => resizes all windows equally
+* `ctrl-w p` => move back to previous window
+* `ctrl-w <HJKL>` => move windows
 * https://vimhelp.org/windows.txt.html#window-resize
-* To change width => `ctrl+w 5<` or `ctrl+w 6>`
-* To change height => `ctrl+w 5+` or `ctrl+w 6-`
-* `ctrl+w s` => horizontal split
-* `ctrl+w v` => vertical split
-* `ctrl+w T` => move current window to new tab
+* To change width => `ctrl-w 5<` or `ctrl-w 6>`
+* To change height => `ctrl-w 5+` or `ctrl-w 6-`
+* `ctrl-w s` => horizontal split
+* `ctrl-w v` => vertical split
+* `ctrl-w T` => move current window to new tab
 
 
 ## VIM IDE
 
 * start vim
 * Open dir browser on left =>  `:Lexplore`
-* resize dir browser => `:vertical resize 30` or `ctrl+w [-+]`
+* resize dir browser => `:vertical resize 30` or `ctrl-w [-+]`
 * open new file in new split window when `Enter` is pressed on a file in dir window => `:let g:netrw_browse_split = 2`
-* switch to new window => `ctrl+w w`
+* switch to new window => `ctrl-w w`
 * create a new file in vertical split => `:vs afile.txt`
 * open terminal => `:term`
-* Bring terminal down => `ctrl+w J`
-   * Enter terminal Normal mode => `ctrl+w N`
-   * to adjust height of terminal => `ctrl+w :resize 40`
-   * `ctrl+w |` => maximizes width of window
-   * `ctrl+w =` => restores all window sizes to equal proportions.
-* `ctrl+w q`  => closes window
-* `<num>ctrl+w` => make current window height to max
-* `<num>ctrl+w |` => make currrent window width to max
-* `<num>ctrl+w =` => make all windows of equal size.
-* `<num>ctrl+w [+-]` => window resize vertically
-* `<num>ctrl+w [<>]` => window resize horizontally.
+* Bring terminal down => `ctrl-w J`
+   * Enter terminal Normal mode => `ctrl-w N`
+   * to adjust height of terminal => `ctrl-w :resize 40`
+   * `ctrl-w |` => maximizes width of window
+   * `ctrl-w =` => restores all window sizes to equal proportions.
+* `ctrl-w q`  => closes window
+* `<num>ctrl-w` => make current window height to max
+* `<num>ctrl-w |` => make currrent window width to max
+* `<num>ctrl-w =` => make all windows of equal size.
+* `<num>ctrl-w [+-]` => window resize vertically
+* `<num>ctrl-w [<>]` => window resize horizontally.
 * `z<number><Enter> => resizes current window vertically as per <number>`
-* Go to explorer winow using `ctrl+w w` and press `i` to change view. Keep on pressing i to see different viees.
+* Go to explorer winow using `ctrl-w w` and press `i` to change view. Keep on pressing i to see different viees.
 * `set splitbelow` to open new window below the current
 * `set splitrigt` to open new window on the right of the current window.
 * change file(buffer) in current window => `b! <buffer number>`
@@ -389,14 +389,14 @@ https://vimhelp.org/terminal.txt.html
 * press `v` to go in visual mode, and start selecting pattern using motion keys like `l,h,w,b` etc. e.g vEE (to select two words that may have non-word chars)
 * press `c` now to cut the content in `"` register and start in insert mode
 * edit the text and when finished press <ESC> to go in normal mode.
-* press `/` to go in search mode and press `ctrl+r "` to paste the cut contents and press <Enter>. This will move the cursor to the next searched pattern.
+* press `/` to go in search mode and press `ctrl-r "` to paste the cut contents and press <Enter>. This will move the cursor to the next searched pattern.
 * now press `.` to replace the pattern
 * press `n` to move to next search and press `.` to replace it again.
 
 
 ## Search and replace in visual mode
 
-* select the block of text with `ctrl+v`
+* select the block of text with `ctrl-v`
 * press `<ESC>`
 * `:%s/\%Vpattern/replacedPatterm/g`
 * Above will replace only in visually selected area.
@@ -405,7 +405,7 @@ https://vimhelp.org/terminal.txt.html
 
 ## Search and replace in visual mode - method-2
 
-* select the block of text with `ctrl+v`
+* select the block of text with `ctrl-v`
 * press `c` (delete and insert)
 * type the text you want
 * press `<ESC>`. It will replace the text you typed on the very first selected line
@@ -413,7 +413,7 @@ https://vimhelp.org/terminal.txt.html
 
 ## Search and replace in visual mode - method-3
 
-* select the block of text with `ctrl+v`
+* select the block of text with `ctrl-v`
 * press `r`
 * type the character you want to fill visual block with.
 * press `<ESC>`. It will replace the entire visual block the the single character only.
@@ -443,11 +443,11 @@ https://vimhelp.org/terminal.txt.html
 
 ## split all lines of an english paragraph in its own lines separately
 
-* `:s/\./\.<ctrl+v><ctrl+ENTER>/gc` 
+* `:s/\./\.<ctrl-v><ctrl-ENTER>/gc` 
 
 ## split a line in its individual words on its own separate lines
 
-* `s/\(\w\+\)/\1<ctrl+v><ctrl+ENTER>/gc`
+* `s/\(\w\+\)/\1<ctrl-v><ctrl-ENTER>/gc`
 
 
 ## VIM shell compile/run edit cycle
@@ -461,13 +461,13 @@ https://vimhelp.org/terminal.txt.html
 * Bring back some.py in current window: `b! #`
 * To hide a buffer => `:hide`
 * To delete a buffer => `:ls` and then `:bd! <number>`
-* Go to other window => `ctrl+w w`
+* Go to other window => `ctrl-w w`
 * open `/tmp/output-2` buffer horizontally in this window => `:sb 3`
 * switch to `some.py` window and run python script again with output going to `/tmp/output-1` => `:e! /tmp/output-1 | r! python3 #` => This replaces current some.py window with lastest output
 * bring back some.py => `b! #`
 
 * following can also be used and should be much simpler
-* `:vsplit  /tmp/some-new | r! python3 -m json.tool #` => opens `/tmp/some-new` in new vertical window. You can keep on repeating above command. and it will open a new window every time. You can close the previous window by switching to it using `ctrl+w w` and then `:hide`
+* `:vsplit  /tmp/some-new | r! python3 -m json.tool #` => opens `/tmp/some-new` in new vertical window. You can keep on repeating above command. and it will open a new window every time. You can close the previous window by switching to it using `ctrl-w w` and then `:hide`
 * you can list all buffers with `:ls`
 * you can open a buffer in current window using `:b! <number>`
 * you can split window on either right or left using `:set splitright!` or `:set splitright`
@@ -477,7 +477,7 @@ https://vimhelp.org/terminal.txt.html
 
 * in normal-mode: `"ayy` => copies current line in register `a`
 * in normal-mode: `"ap`  => paste the contents of register `a` below the current line
-* in insert-mode: `ctrl+r a` => paste the contents of register in current position.
+* in insert-mode: `ctrl-r a` => paste the contents of register in current position.
 * `"` is the default register.
 * `:` is register which stores commands entered in ex-command mode.
 * in normal-mode: `@a` => will execute the contents of register.
@@ -543,7 +543,7 @@ we want to cut the column before `:` and paste is somewhere else.
 ```
 
 * Now go to the line where you want to paste the cut content.
-* press `"bp` or `ctrl+r b`. I moved to the last line and now contents look like this.
+* press `"bp` or `ctrl-r b`. I moved to the last line and now contents look like this.
 
 ```
 "devDependencies": {
@@ -562,7 +562,7 @@ we want to cut the column before `:` and paste is somewhere else.
 
 * In order to put above one line content in different lines, run following command in ex-command mode. Make sure your cursor is on that line.
 * `:. ! perl -wpl -e 's/(".+?")/$1\n/g' `
-* or run this command => `:s/""/"<ctrl+v><ctrl+ENTER>"/g`
+* or run this command => `:s/""/"<ctrl-v><ctrl-ENTER>"/g`
 * now contents will look like this.
 
 ```
@@ -632,7 +632,7 @@ we want to cut the column before `:` and paste is somewhere else.
 * use `cnext` => to move to next match in quickfix window
 * in NORMAL mode use `@:` to repeat last executing ex-command, ie. in this case :cnext
 * After `@:`, use `@@` to keep repeating ex-command in NORMAL mode.
-* If you want to remove entries from `quickfix` window then swith to quickfix window by pressing `Ctrl+w w` and then `:set modifiable`. Now you can run normal vim commands here, like `dd` or `:g/<pattern>/d`
+* If you want to remove entries from `quickfix` window then swith to quickfix window by pressing `ctrl-w w` and then `:set modifiable`. Now you can run normal vim commands here, like `dd` or `:g/<pattern>/d`
 
 
 ## Search and replace interactively in multiple files using standard unix tools and quickfix
@@ -865,7 +865,7 @@ fn references_example_1() {
 * `:execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"` => inserts `//` at 39 coloumn and inserts 20 blank spaces after `//` as well. Inserting extra blank space is required in order to insert text on right side.
 * Now in NORMAL mode you can type @@ to repeat above command, and it will keep on inserting `//` in subsequent lines. However next ex-command will overwrite `@` register.
 * Second option: is to take above ex-command in register and execute register in NORMAL mode. We shall take this ex-command in `r` register.
-   * write above ex-command like this => `:execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"<ctl+v><ctrl+Enter>`. ctrl+v and ctrl+Enter are literal key press. This will look like below.
+   * write above ex-command like this => `:execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"<ctl+v><ctrl-Enter>`. ctrl-v and ctrl-Enter are literal key press. This will look like below.
    * `:execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"^M`
    * In NORMAL mode, press `v` and select the above ex-command text (using l repeatedly) till `^` point only.
    * Now press `"ry` to copy this text in `r` register.
@@ -880,10 +880,10 @@ fn references_example_1() {
    * Keep on repeating `@@` in NORMAL mode to keep on inserting `// |` in subsequent lines.
 
 * We will be storing following 4 command in their own respective registers.
-* `:execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"^M`  => store it in register `r`. `^M` is actually <ctrl+v><ctrl+enter> key sequence 
-* `:execute "normal! 43|\<esc>R|a\<esc>j"^M` => store it in register `a`. `^M` is actually <ctrl+v><ctrl+enter> key sequence
-* `:execute "normal! 47|\<esc>R|b\<esc>j"^M` => store it in register `b`. `^M` is actually <ctrl+v><ctrl+enter> key sequence
-* `:execute "normal! 51|\<esc>R|c\<esc>j"^M` => store it in register `c`. `^M` is actually <ctrl+v><ctrl+enter> key sequence
+* `:execute "normal! $40a \<esc>39|d$a//\<esc>20a \<esc>j"^M`  => store it in register `r`. `^M` is actually <ctrl-v><ctrl-enter> key sequence 
+* `:execute "normal! 43|\<esc>R|a\<esc>j"^M` => store it in register `a`. `^M` is actually <ctrl-v><ctrl-enter> key sequence
+* `:execute "normal! 47|\<esc>R|b\<esc>j"^M` => store it in register `b`. `^M` is actually <ctrl-v><ctrl-enter> key sequence
+* `:execute "normal! 51|\<esc>R|c\<esc>j"^M` => store it in register `c`. `^M` is actually <ctrl-v><ctrl-enter> key sequence
 
 * We have following text
 
