@@ -10,13 +10,13 @@ We will be using `terraform-cdk` toolkit in this article. We shall be using an `
 
 We shall be doing following.
 
-#### Manual steps to prepare cloud environment first (using `oci-cli`)
+##### Manual steps to prepare cloud environment first (using `oci-cli`)
 
 * Create a new user account `cdk-user` (apart from the tenancy admin) and new `compartment` called as `CDK` for this user.
 * `cdk-user` will have full privleges to `CDK` compartment.
 * This is done as per Oracle recommended practices for `OCI`.
 
-#### Steps performed by terraform CDK.
+##### Steps performed by terraform CDK.
 * Create a brand new `VCN` in `CDK` compartment.
 * Create 1 public subnet.
 * A key-pair for ssh
@@ -43,7 +43,7 @@ We shall be doing following.
 ## Prepare local development environment
 We shall be doing everything in a docker image. I am using fedora-34.
 
-### Start fedora-34 in interactive mode.
+#### Start fedora-34 in interactive mode.
 ```bash
 $ docker run -it fedora:34 /bin/bash
 
@@ -55,7 +55,7 @@ Status: Downloaded newer image for fedora:34
 [root@248b335b1e23 /]#
 ```
 
-### Install NVM (node version manager) inside docker container.
+#### Install NVM (node version manager) inside docker container.
 ```bash
 [root@248b335b1e23 /]# curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
@@ -73,18 +73,18 @@ export NVM_DIR="$HOME/.nvm"
 [root@248b335b1e23 /]#
 ```
 
-### Enable NVM in current shell
+#### Enable NVM in current shell
 ```bash
 [root@248b335b1e23 /]# source /root/.bashrc
 ```
 
-### Install latest stable node.
+#### Install latest stable node.
 ```bash
 [root@248b335b1e23 /]# nvm install --lts
 Installing latest LTS version.
 Downloading and installing node v14.17.6...
 Downloading https://nodejs.org/dist/v14.17.6/node-v14.17.6-linux-x64.tar.gz...
-################################################################################################################################################## 100.0%
+################################################################################################################################################################################################## 100.0%
 Computing checksum with sha256sum
 Checksums matched!
 Now using node v14.17.6 (npm v6.14.15)
@@ -92,31 +92,31 @@ Creating default alias: default -> lts/* (-> v14.17.6 *)
 [root@248b335b1e23 /]#
 ```
 
-### Install VIM, unzip, less
+#### Install VIM, unzip, less
 ```bash
-[root@248b335b1e23 /]# dnf install vim unzip less openssh-clients jq -y
+[root@248b335b1e23 /]# dnf install vim unzip less openssh-clients jq openssl -y
 ```
 
-### Install oci-cli
+#### Install oci-cli
 ```bash
 [root@248b335b1e23 /]# dnf install python -y
 [root@248b335b1e23 /]# pip install oci-cli
 ```
 
-### Configure OCI account
+## Configure Tenancy Admin account to access OCI via APIs
 You can run `oci setup config` command to setup the oci config. But we will be following direct manual method as we already have config saved in previous step when we prepared the oci envrionment.
 ```bash
 [root@248b335b1e23 /]# mkdir ~/.oci
 [root@248b335b1e23 /]# chmod g-rwx,o-rwx /root/.oci
 [root@248b335b1e23 /]# ls -ld /root/.oci/
 drwx------ 2 root root 4096 Sep 20 23:36 /root/.oci/
-[root@248b335b1e23 /]# touch ~/.oci/privateKey.pem
-[root@248b335b1e23 /]# vim ~/.oci/privateKey.pem
+[root@248b335b1e23 /]# touch ~/.oci/tenancyAdmin_private_api_key.pem
+[root@248b335b1e23 /]# vim ~/.oci/tenancyAdmin_private_api_key.pem
 ```
-Paste the contents from file that you downloaded during the step `download private key` above in file `~/.oci/privateKey.pem`
+Paste the contents from file that you downloaded during the step `download private key` above in file `~/.oci/tenancyAdmin_private_api_key.pem`
 
 ```bash
-[root@248b335b1e23 /]# chmod 600 ~/.oci/privateKey.pem
+[root@248b335b1e23 /]# chmod 600 ~/.oci/tenancyAdmin_private_api_key.pem
 [root@248b335b1e23 /]# touch ~/.oci/config
 [root@248b335b1e23 /]# chmod 600 ~/.oci/config
 [root@248b335b1e23 /]# vim  ~/.oci/config
@@ -130,17 +130,23 @@ user=ocid1.user.oc1..<a very long string>
 fingerprint=xx:yy:11:22:33:44:d4:56:b6:67:89:b7:b1:7f:4f:7a
 tenancy=ocid1.tenancy.oc1..<a very long string>
 region=uk-london-1
-key_file=~/.oci/privateKey.pem
+key_file=~/.oci/tenancyAdmin_private_api_key.pem
 ```
 Please note `key_file=` above. You need to have exactly the same entry as above.
 
-### Verify connectivity to OCI
+#### Verify connectivity to OCI
 ```bash
 [root@248b335b1e23 /]# oci iam user list
 ```
 Above command must run successfully.
 
-### Get reuired info in variables.
+## Create and setup `cdk-user` 
+
+We will be creating a new user `cdk-user` and new compartment `CDK`, where this user can manage anything.
+Following are the manual steps. But there is a script `setup_oci_user_account.sh` as well in git repo that can also do the same.
+Link to the git repo is mentioned at the bottom of this article.
+
+#### Get reuired info in variables.
 ```bash
 [root@248b335b1e23 /]# export tenancyID=$(cat ~/.oci/config | egrep '^tenancy' | awk -F"=" '{print $2}')
 [root@248b335b1e23 /]# export rootCompartmentID=$tenancyID
@@ -149,87 +155,87 @@ Above command must run successfully.
 Note: `Root compartmentID` is same as `TenancyID`
 
 
-### Create `CDK` compartment
+#### Create `CDK` compartment
 ```bash
 [root@248b335b1e23 /]# oci iam compartment create --name CDK --compartment-id $rootCompartmentID --description "CDK Compartment"
 ```
 
 Take a note of `CDK` compartment id from above output.
 
-### Create `cdk-user`
+#### Create `cdk-user`
 ```bash
 [root@248b335b1e23 /]# oci iam user create --name cdk-user --compartment-id $rootCompartmentID --description "cdk user"
 ```
 
-### Create `cdk-group`
+#### Create `cdk-group`
 ```bash
 [root@248b335b1e23 /]# oci iam group create --name cdk-group --compartment-id $rootCompartmentID --description "cdk group"
 ```
 
-### Add `cdk-user` to `cdk-group`
+#### Add `cdk-user` to `cdk-group`
 ```bash
 [root@248b335b1e23 /]# export cdk_user_ocid=$(oci iam user list --name cdk-user | jq -r '.data[0].id')
 [root@248b335b1e23 /]# export cdk_group_ocid=$(oci iam group list --name cdk-group | jq -r '.data[0].id')
 [root@248b335b1e23 /]# oci iam group add-user --user-id $cdk_user_ocid --group-id $cdk_group_ocid
 ```
 
-### Allow `cdk-group` to do anything in compartment `CDK`
+#### Allow `cdk-group` to do anything in compartment `CDK`
 ```bash
 [root@248b335b1e23 /]# export CDKcompartmentID=$(oci iam compartment list  --compartment-id $rootCompartmentID --lifecycle-state ACTIVE | jq -r '.data[] | select(.name == "CDK") | .id')
 
 [root@248b335b1e23 /]# oci iam policy create --name "CDK_Policies" --compartment-id $CDKcompartmentID --description "Policies for CDK" --statements '["Allow group cdk-group to manage all-resources in compartment CDK"]'
 ```
 
-### Generate API keys for `cdk-user`
+#### Generate API keys for `cdk-user`
 ```bash
 [root@248b335b1e23 /]# cd ~/.oci/
-[root@248b335b1e23 .oci]# openssl genrsa -out private_api_key_cdk_user.pem 2048
-[root@248b335b1e23 .oci]# openssl rsa -pubout -in private_api_key_cdk_user.pem -out public_api_key_cdk_user.pem
-[root@248b335b1e23 .oci]# chmod go-rwx private_api_key_cdk_user.pem
+[root@248b335b1e23 .oci]# openssl genrsa -out cdk-user_private_api_key.pem 2048
+[root@248b335b1e23 .oci]# openssl rsa -pubout -in cdk-user_private_api_key.pem -out cdk-user_public_api_key.pem
+[root@248b335b1e23 .oci]# chmod go-rwx cdk-user_private_api_key.pem
 ```
-### Upload public key for `cdk-user`
+#### Upload public key for `cdk-user`
 ```bash
-[root@248b335b1e23 .oci]# oci iam user api-key upload --user-id $cdk_user_ocid --key-file ~/.oci/public_api_key_cdk_user.pem
+[root@248b335b1e23 .oci]# oci iam user api-key upload --user-id $cdk_user_ocid --key-file ~/.oci/cdk-user_public_api_key.pem
 ```
 
-### preapre `cdk-user` profile in `~/.oci/config` file
+#### preapre `cdk-user` profile in `~/.oci/config` file
 ```bash
-[root@248b335b1e23 .oci]# export cdk_user_fingerprint=$(oci iam user api-key list --user-id $cdk_user_ocid | jq -r '.data[0].fingerprint')
-
+[root@248b335b1e23 .oci]# export cdk_user_fingerprint=$(openssl rsa -pubout -outform DER -in ~/.oci/cdk-user_private_api_key.pem 2> /dev/null | openssl md5 -c | awk '{print $2}')
 [root@248b335b1e23 .oci]# cat <<HELLO >> ~/.oci/config
-[CDK_USER]
+[cdk-user]
 user=$cdk_user_ocid
 fingerprint=$cdk_user_fingerprint
 tenancy=$tenancyID
 region=$tenancyRegion
-key_file=~/.oci/private_api_key_cdk_user.pem
+key_file=~/.oci/cdk-user_private_api_key.pem
 HELLO
 ```
 A new section has been appened to `~/.oci/config file`
 
 #### verify `cdk-user` access
 ```bash
-[root@248b335b1e23 .oci]# oci iam user get --user-id=$cdk_user_ocid --profile CDK_USER
+[root@248b335b1e23 .oci]# oci iam user get --user-id=$cdk_user_ocid --profile cdk-user
 ```
 
-Note: `--profile CDK_USER` in above command
+Note: `--profile cdk-user` in above command
 
+## Install tools required for development
 
-### Install terraform binary
+#### Install terraform binary
 ```bash
 [root@248b335b1e23 /]# dnf install -y dnf-plugins-core
 [root@248b335b1e23 /]# dnf config-manager --add-repo https://rpm.releases.hashicorp.com/fedora/hashicorp.repo
 [root@248b335b1e23 /]# dnf -y install terraform
 ```
 
-### Install `terraform-cdk` kit
+#### Install `terraform-cdk` kit
 ```bash
 [root@248b335b1e23 /]# npm install --global cdktf-cli
 [root@248b335b1e23 /]# cdktf --version
 0.6.2
 ```
 
-### Install `pipenv`
+#### Install `pipenv`
 ```bash
 [root@248b335b1e23 /]# pip install pipenv
 ```
@@ -238,7 +244,7 @@ Note: `--profile CDK_USER` in above command
 
 ## Start coding.
 
-### Create a project with `python` template
+#### Create a project with `python` template
 ```bash
 [root@248b335b1e23 ~]# mkdir ~/oci_terraform_cdk_python
 [root@248b335b1e23 ~]# cd ~/oci_terraform_cdk_python/
@@ -251,20 +257,20 @@ This means that your Terraform state file will be stored locally on disk in a fi
 ? projectDescription: A public VM in OCI
 ```
 
-### Install OCI sdk and other required libraries
+#### Install OCI sdk and other required libraries
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# pipenv install pycryptodome oci
 ```
 
-### Files in current direcotry
+#### Files in current direcotry
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# ls -a
 .  ..  .gitignore  Pipfile  Pipfile.lock  cdktf.json  help  main.py
 ```
 
-### Download OCI terraform modules libraries
+#### Download OCI terraform modules libraries
 
-#### Add terraform provider information in `cdktf.json` file
+##### Add terraform provider information in `cdktf.json` file
 ```python
 {
   "language": "python",
@@ -282,7 +288,7 @@ This means that your Terraform state file will be stored locally on disk in a fi
 }
 ```
 
-#### Get the OCI terraform libraries
+##### Get the OCI terraform libraries
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# cdktf get
 
@@ -290,12 +296,12 @@ This means that your Terraform state file will be stored locally on disk in a fi
 Pipfile  Pipfile.lock  account.py  cdktf.json  help  imports  main.py
 ```
 
-### Create a helper library `account.py` with following contents
+#### Create a helper library `account.py` with following contents
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# touch account.py
 ```
 
-#### `account.py` contents
+##### `account.py` contents
 ```python
 #! /usr/bin/env python
 
@@ -303,10 +309,11 @@ import oci
 from Crypto.PublicKey import RSA
 import os
 
-
 keys_dir = "keys"
+profile_name = "cdk-user"
+compartment_name = "CDK"
 
-config = oci.config.from_file("~/.oci/config", "CDK_USER")
+config = oci.config.from_file("~/.oci/config", profile_name)
 identity = oci.identity.IdentityClient(config)
 user = identity.get_user(config["user"]).data
 compartment_id = user.compartment_id
@@ -325,7 +332,7 @@ def get_availability_domain():
 
     return availability_domain.name
 
-def get_compartment_id(comp_name="CDK") -> str:
+def get_compartment_id(comp_name=compartment_name) -> str:
 
     desired_compartment_id: str = ""
 
@@ -334,7 +341,7 @@ def get_compartment_id(comp_name="CDK") -> str:
             'record',
             compartment_id,
             compartment_id_in_subtree=True,
-            lifecycle_state="ACTIVE", access_level="ACCESSIBLE"):
+            lifecycle_state="ACTIVE"):
         if comp.name == comp_name:
             desired_compartment_id = comp.id
     return desired_compartment_id
@@ -374,9 +381,9 @@ if  __name__ == '__main__':
     print(get_key_pair())
 ```
 
-### update `main.py` with following contents
+#### update `main.py` with following contents
 
-#### `main.py` contents
+##### `main.py` contents
 ```python
 #!/usr/bin/env python
 
@@ -395,19 +402,19 @@ from imports.oci import (CoreDhcpOptionsOptions,
     CoreRouteTable,
     CoreRouteTableAttachment,
     )
-from account import get_compartment_id, get_availability_domain, get_key_pair
+from account import get_compartment_id, get_availability_domain, get_key_pair, compartment_name, profile_name
 
 class MyStack(TerraformStack):
     def __init__(self, scope: Construct, ns: str):
         super().__init__(scope, ns)
-        desired_compartment_id: str = get_compartment_id(comp_name="CDK")
+        desired_compartment_id: str = get_compartment_id(comp_name=compartment_name)
         desired_availability_domain = get_availability_domain()
         desired_image_id = "ocid1.image.oc1.uk-london-1.aaaaaaaa7p27563e2wyhmn533gp7g3wbohrhjacsy3r5rpujyr6n6atqppuq"
         public_key = get_key_pair()
 
         # define resources here
         OciProvider(self, "oci",
-                config_file_profile="CDK_USER")
+                config_file_profile=profile_name)
 
         vcn = CoreVcn(self, "OCI_VCN",
                 cidr_block="10.0.0.0/16",
@@ -475,14 +482,14 @@ MyStack(app, "oci_terraform_cdk_python")
 app.synth()
 ```
 
-NOTE: `image_id` in above script was obtained from https://docs.oracle.com/en-us/iaas/images/image/33995e8a-13e8-4ebe-8a27-8beae9e57043/
+NOTE: `desired_image_id` in above script was obtained from https://docs.oracle.com/en-us/iaas/images/image/33995e8a-13e8-4ebe-8a27-8beae9e57043/
 
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# ls
 Pipfile  Pipfile.lock  account.py  cdktf.json  help  imports  main.py
 ```
 
-### check what will be deployed
+#### check what will be deployed
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# cdktf diff
 Stack: oci_terraform_cdk_python
@@ -501,7 +508,7 @@ Resources
 Diff: 7 to create, 0 to update, 0 to delete.
 ```
 
-### deploy to OCI
+#### deploy to OCI
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# cdktf deploy --auto-approve
 Deploying Stack: oci_terraform_cdk_python
@@ -527,7 +534,7 @@ Output: VM_public_ip = 150.230.119.194
 
 Note: The public IP of the VM is there in above output.
 
-### Verify deployment by doing ssh into the VM
+#### Verify deployment by doing ssh into the VM
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# ssh -i keys/private.pem opc@150.230.119.194
 The authenticity of host '150.230.119.194 (150.230.119.194)' can't be established.
@@ -540,13 +547,13 @@ Warning: Permanently added '150.230.119.194' (ED25519) to the list of known host
 [opc@instance20210921093338 ~]$
 ```
 
-### Verify the idempotency
+#### Verify the idempotency
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# cdktf deploy --auto-approve
 No changes for Stack: oci_terraform_cdk_python
 ```
 
-### Destroy the deployment
+#### Destroy the deployment
 ```bash
 [root@248b335b1e23 oci_terraform_cdk_python]# cdktf destroy --auto-approve
 Destroying Stack: oci_terraform_cdk_python
@@ -564,4 +571,7 @@ Resources
 
 Summary: 7 destroyed.
 ```
+
+#### Repo link
+https://github.com/spareslant/oci_terraform_cdk_python.git
 
