@@ -1,7 +1,7 @@
 ---
 title: "Terraform CDK Create OCI OracleCloudInfraStructure VM"
 date: 2021-09-20T23:40:41+01:00
-draft: true
+draft: false
 tags: ["terraform", "OCI", "oci-cli", "cdk", "python", "Terraform CDK", "cdktf", "Oracle Cloud Infrastructure"]
 ---
 
