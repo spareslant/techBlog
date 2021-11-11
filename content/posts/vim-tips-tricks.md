@@ -1,7 +1,7 @@
 ---
 title: "Vim Tips and Tricks"
 date: 2019-09-01T20:24:26+01:00
-draft: true
+draft: false
 tags: ["vim", "fzf"]
 ---
 
