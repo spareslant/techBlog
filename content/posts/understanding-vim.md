@@ -611,7 +611,7 @@ we want to cut the column before `:` and paste is somewhere else.
 ```
 
 
-## FZF flow
+## FZF plugin flow
 
 * To List all files in current directory
 * `:Files`  `:Files!` (Full screen, use shit-arrows to scroll in preview windows)
