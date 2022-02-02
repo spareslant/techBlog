@@ -130,6 +130,9 @@ draft: true
 	- In Rust, only one thing can ever own a piece of data at a time.
 	- Ownership can't be transferred for types that implement the Copy trait, such as for simple values like numbers.
 	- & borrows known as "immutable borrows". &mut borrows known as mutable borrows
+  - A variable owns its value. When control leaves the block in which the variable is declared, the variable is dropped, so its value is dropped along with it
+  - Just as variables own their values, structs own their fields, and tuples, arrays, and vectors own their elements
+  - When we pass the vector to the loop directly, as in for ... in v, this moves the vector out of v, leaving v uninitialized. The for loop’s internal machinery takes ownership of the vector and dissects it into its elements
 
 
 
@@ -172,7 +175,12 @@ draft: true
   - Like a function, the body of a classic struct is defined inside curly brackets {}. `struct Student { name: String, level: u8, pass: bool }`
   - the body of a tuple struct is defined inside parentheses (), like a tuple.
   - (source: https://docs.microsoft.com/en-us/learn/modules/rust-understand-common-concepts/4-structs-enums)
-
+  - If the struct takes other kinds of generic parameters, lifetime parameters must come first, followed by types, followed by any const values. For example, a type that holds an array of references could be declared like this:
+  ```rust
+  struct LumpOfReferences<'a, T, const N: usize> {
+    the_lump: [&'a T; N]
+  }
+  ```
 
 
 * Enums
@@ -224,6 +232,7 @@ draft: true
 
 * match
   - The code associated with each arm is an expression, and the resulting value of the expression in the matching arm is the value that gets returned for the entire match expression.
+  - Patterns that always match are special in Rust. They’re called irrefutable patterns, and they’re the only patterns allowed in the four places shown here (after let, in function arguments, after for, and in closure arguments).
 
 
 
@@ -243,6 +252,7 @@ draft: true
   - src/main.rs and src/lib.rs are called crate roots. The reason for their name is that the contents of either of these two files form a module named crate at the root of the crate’s module structure, known as the module tree
   - If a source file has mod declarations in it, the contents of the module files would be inserted in places where mod declarations in the source file are found, before running the compiler over it. In other words, modules don't get compiled individually, only crates get compiled
   - By default, everything in Rust is private and can only be accessed by the current module and its descendants. In contrast, when an item is declared as pub, it can be thought of as being accessible to the outside world
+  - Although you can have many separate impl blocks for a single type, they must all be in the same crate that defines that type
 
 
 * Vectors
@@ -257,6 +267,7 @@ draft: true
   ```
   - Vectors store data in Heap
 	- vec::get(index) returns Option<&T>. So in case of `vec!["yahoo", "google", "hotmail"]` it will return Option<&&str> because "yahoo" etc are actually `&str`.
+  - Range syntax `v[start..stop]` returns `&[T]`
 
 
 
@@ -283,6 +294,11 @@ draft: true
 	- https://stackoverflow.com/questions/41413336/do-all-primitive-types-implement-the-copy-trait
 
 
+* slices
+  - slices can’t be stored directly in variables or passed as function arguments. Slices are always passed by reference.
+
+
+
 * Hash Maps
   - Just like vectors, hash maps store their data on the heap
   - all of the keys must have the same type, and all of the values must have the same type.
@@ -301,6 +317,7 @@ draft: true
   ```
 
 
+
 * Loops
 	- Rust offers three loop expressions to make a program repeat a block of code: loop, while, for
 	- By using the break keyword, you can both stop repeating the actions in the expression body and also return a value at the break point.
@@ -316,6 +333,7 @@ draft: true
 	- https://blog.thoughtram.io/lifetimes-in-rust/
 	- As with types, lifetime durations are inferred by the Rust compiler.
 	- The reference's lifetime that the function returns matches the smaller of the references' lifetimes that are passed in.
+  - it’s not just references and types like S that have lifetimes. Every type in Rust has a lifetime, including i32 and String. Most are simply 'static, meaning that values of those types can live for as long as you like; for example, a Vec<i32> is self-contained and needn’t be dropped before any particular variable goes out of scope. But a type like Vec<&'a i32> has a lifetime that must be enclosed by 'a: it must be dropped while its referents are still alive.
 
 
 
@@ -335,6 +353,28 @@ draft: true
 
   Note: All above statements are same
   ```
+  - the trait itself must be in scope. Otherwise, all its methods are hidden
+  ```rust
+  use std::io::Write;
+  let mut buf: Vec<u8> = vec![];
+  buf.write_all(b"hello")?;  // ok
+  ```
+  - The reason `Clone` and `Iterator` methods work without any special imports is that they’re always in scope by default: they’re part of the standard prelude, names that Rust automatically imports into every module
+  - calls through `&mut dyn Write` incur the overhead of a dynamic dispatch, also known as a virtual method call, which is indicated by the `dyn` keyword in the type
+  - `dyn Write` is known as a trait object
+  - Only calls through `&mut dyn Write` incur the overhead of a dynamic dispatch, also known as a virtual method call, which is indicated by the dyn keyword in the type
+  - A reference to a trait type, like `writer`, is called a trait object. `dyn Write` is known as a trait object
+  - `&mut dyn Write`, meaning "a mutable reference to any value that implements the Write trait"
+  - when you implement a trait, either the trait or the type must be new in the current crate. This is called the orphan rule
+  - trait objects is that the type isn’t known until run time
+  - There is one unusual rule about trait methods: the trait itself must be in scope. Otherwise, all its methods are hidden. The reason `Clone` and `Iterator` methods work without any special imports is that they’re always in scope by default: they’re part of the standard prelude, names that Rust automatically imports into every module
+  - Rust doesn’t allow trait methods to use `impl Trait` return values. only free functions and functions associated with specific types can use impl Trait returns
+  - `impl Trait` can also be used in functions that take generic arguments.
+  ```rust
+  fn print(val: impl Display) {
+    println!("{}", val);
+  }
+  ```
 
 
 
@@ -353,6 +393,9 @@ draft: true
   - Methods that call next are called `consuming adaptors`, because calling them uses up the iterator.
   - Other methods defined on the Iterator trait, known as `iterator adaptors`, allow you to change iterators into different kinds of iterators
   - The filter method on an iterator takes a closure that takes each item from the iterator and returns a Boolean. If the closure returns true, the value will be included in the iterator produced by filter. If the closure returns false, the value won’t be included in the resulting iterator
+  - We didn’t need to make `v1_iter` mutable when we used a for loop because the loop took ownership of `v1_iter` and made it mutable behind the scenes
+  - an iterator is any type that implements `Iterator`
+  - An iterable is any type that implements `IntoIterator`
 
 
 
@@ -362,3 +405,31 @@ draft: true
   - Closures don’t require you to annotate the types of the parameters or the return value like fn functions do
   - Each closure instance has its own unique anonymous type: that is, even if two closures have the same signature, their types are still considered different
   - To define structs, enums, or function parameters that use closures, we use generics and trait bounds
+  - All closures implement at least one of the traits: `Fn`, `FnMut`, or `FnOnce`
+  - `fn` value is the memory address of the function’s machine code, just like a function pointer in C++
+  - closures do not have the same type as functions
+  ```rust
+  fn(&City) -> bool    // fn type (functions only)
+  Fn(&City) -> bool    // Fn trait (both functions and closures)
+  ```
+  - every closure you write has its own type, because a closure may contain data: values either borrowed or stolen from enclosing scopes. This could be any number of variables, in any combination of types. So every closure has an ad hoc type created by the compiler, large enough to hold that data. No two closures have exactly the same type. But every closure implements an Fn trait
+  - Every `Fn` meets the requirements for `FnMut`, and every `FnMut` meets the requirements for `FnOnce`.
+  - `Fn()` is a subtrait of `FnMut()`, which is a subtrait of `FnOnce()`
+
+
+
+* Type syntax: Turbofish syntax theory ::<
+  - when defining struct, function or varibales (left hand side of `=`), you can mention it like below:
+  ```rust
+  fn some<'a, 'b>(x: &'a String, y: &'b i32) {}
+  ```
+  ```rust
+  let x: Vec<i32> = vec![1, 2, 3];
+  ```
+  - But when specifying type in expression or on the right hand side of `=`, then mention is like below
+  ```rust
+  return Vec::<i32>::with_capacity(1000);
+  ```
+  ```rust
+  let ramp = (0 .. n).collect::<Vec<i32>>();
+  ```

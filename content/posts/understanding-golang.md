@@ -63,3 +63,8 @@ The name of this method is `(*Point).ScaleBy`. The parentheses are necessary; wi
 - GOPATH is nothing but the current appointed workspace on your machine. It is an environment variable that tells the Go compiler about where your source code, binaries, and packages are placed. 
 
 
+### Data Types
+  - Go provides a special data type for representing error conditions and error messages named `error`
+  - To a custom error, you can use `errors.New()` from the `errors` package
+  - `fmt.Errorf()` function returns an `error` value just like `errors.New()`
+
